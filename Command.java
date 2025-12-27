@@ -21,7 +21,7 @@ public static Command parse(String line) {
         return new Command(Type.UNKNOWN, null, null);
     }
 
-    String[] parts = line.trim().splt("\\s+", 3);
+    String[] parts = line.trim().split("\\s+", 3);
     String cmd = parts[0].toUpperCase();
 
     if ("SET".equals(cmd) && parts.length == 3) {
