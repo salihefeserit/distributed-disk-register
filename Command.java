@@ -16,6 +16,12 @@ public Command(Type type, String id, String message) {
     this.message = message;
 }
 
+public static Command parse(String line) {
+    if (line == null || line.trim().isEmpty()) {
+        return new Command(Type.UNKNOWN, null, null);
+    }
+}
+
 public Type getType() {
     return type;
 }
