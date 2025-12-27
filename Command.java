@@ -20,6 +20,20 @@ public static Command parse(String line) {
     if (line == null || line.trim().isEmpty()) {
         return new Command(Type.UNKNOWN, null, null);
     }
+
+    String[] parts = line.trim().splt("\\s+", 3);
+    String cmd = parts[0].toUpperCase();
+
+    if ("SET".equals(cmd) && parts.length == 3) {
+        return new Command(Type.SET, parts[1], parts[2]);
+    }
+
+    if ("GET".equals(cmd) && parts.length == 2) {
+        return new Command(Type.GET, parts[1], null);
+    }
+
+    return new Command(Type.UNKNOWN, null, null);
+
 }
 
 public Type getType() {
