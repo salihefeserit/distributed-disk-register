@@ -1,6 +1,8 @@
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.net.ServerSocket;
+import java.net.Socket;
 
 
 public class MessageServer {
@@ -22,5 +24,14 @@ public class MessageServer {
         }
 
         System.out.println("Sunucu başlatıldı, bağlantılar bekleniyor...");
+
+        try (ServerSocket serversocket = new ServerSocket(PORT)) {
+            while (true) {
+                Socket clientSocket = serverSocket.accept();
+                new Thread(() -> handleClient(clientSocket)).start();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
