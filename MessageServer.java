@@ -35,6 +35,30 @@ public class MessageServer {
         }
     }
     private void handleClient(Socket clientSocket) {
-        
+        try (
+            BufferedReader in = new BufferedReader(
+                new InputStreamReader(clientSocket.getInputStream()));
+                PrintWriter out = new PrintWriter(
+                    clientSocket.getOutputStream(), true)
+                ) {
+                    string line;
+                    while ((line = inReadLine()) != null) {
+                        Command cmd = Command.parse(line);
+                        switch (cmd.getType()) {
+                            case SET:
+                                handleSet(cmd, out);
+                                break;
+                            case GET:
+                                handleGet(cmd, out);
+                                break;
+                            default:
+                                out.println("ERROR");
+                        }
+                    }
+                } catch (IOException e) {
+                    System.err.println("Client bağlantı hatası");
+                }
+            
+
     }
 }
