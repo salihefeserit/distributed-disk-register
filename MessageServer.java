@@ -9,5 +9,13 @@ public class MessageServer {
     }
     public void start(){
         //başlangıç kodu eklenecek
+        try {
+            Files.createDirectories(Paths.get(STORAGE_DIR));
+        } catch (IOException e) {
+            System.err.println("Dizin oluşturulamadı");
+            return
+        }
+
+        System.out.println("Sunucu başlatıldı, bağlantılar bekleniyor...");
     }
 }
