@@ -34,4 +34,7 @@ public class MessageServer {
             e.printStackTrace();
         }
     }
+    private void handleClient(Socket clientSocket) {
+        
+    }
 }
