@@ -1,4 +1,6 @@
 family/Empty.class
+com/example/family/NodeStorage.class
+family/FamilyProto.class
 family/NodeInfo$1.class
 com/example/family/NodeRegistry.class
 family/Empty$Builder.class

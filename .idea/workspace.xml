@@ -4,14 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1759e982-cebf-4ce9-9725-89295a431648" name="Changes" comment="TELNET SET - GET cağrısı hataları düzenlendi.">
-      <change afterPath="$PROJECT_DIR$/distributed-disk-register/src/main/java/com/example/family/NodeStorage.java" afterDir="false" />
+    <list default="true" id="1759e982-cebf-4ce9-9725-89295a431648" name="Changes" comment="NodeStorage oluşturuldu, store class ı kodlanıp proto güncellenip derlendi düzenlendi.">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/distributed-disk-register/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/distributed-disk-register/src/main/java/com/example/family/NodeMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/distributed-disk-register/src/main/java/com/example/family/NodeMain.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/distributed-disk-register/src/main/proto/family.proto" beforeDir="false" afterPath="$PROJECT_DIR$/distributed-disk-register/src/main/proto/family.proto" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/classes/family.proto" beforeDir="false" afterPath="$PROJECT_DIR$/distributed-disk-register/target/classes/family.proto" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/generated-sources/protobuf/java/family/ChatMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/distributed-disk-register/target/generated-sources/protobuf/java/family/ChatMessage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/generated-sources/protobuf/java/family/ChatMessageOrBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/distributed-disk-register/target/generated-sources/protobuf/java/family/ChatMessageOrBuilder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/generated-sources/protobuf/java/family/FamilyProto.java" beforeDir="false" afterPath="$PROJECT_DIR$/distributed-disk-register/target/generated-sources/protobuf/java/family/FamilyProto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/src/main/java/com/example/family/NodeStorage.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/distributed-disk-register/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,6 +58,26 @@
     "project.structure.side.proportion": "0.0"
   }
 }]]></component>
+  <component name="RunManager">
+    <configuration name="NodeMain" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.example.family.NodeMain" />
+      <module name="family-grpc" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.example.family.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.NodeMain" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="1759e982-cebf-4ce9-9725-89295a431648" name="Changes" comment="" />
@@ -92,13 +110,22 @@
       <option name="project" value="LOCAL" />
       <updated>1767180737936</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="NodeStorage oluşturuldu, store class ı kodlanıp proto güncellenip derlendi düzenlendi.">
+      <option name="closed" value="true" />
+      <created>1767181709389</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1767181709389</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="TELNET SET cağrısı düzenlenip ana projeye eklendi." />
     <MESSAGE value="TELNET SET - GET cağrısı düzenlenip ana projeye eklendi." />
     <MESSAGE value="TELNET SET - GET cağrısı hataları düzenlendi." />
-    <option name="LAST_COMMIT_MESSAGE" value="TELNET SET - GET cağrısı hataları düzenlendi." />
+    <MESSAGE value="NodeStorage oluşturuldu, store class ı kodlanıp proto güncellenip derlendi düzenlendi." />
+    <option name="LAST_COMMIT_MESSAGE" value="NodeStorage oluşturuldu, store class ı kodlanıp proto güncellenip derlendi düzenlendi." />
   </component>
 </project>

@@ -6,18 +6,20 @@ import family.FamilyView;
 import family.NodeInfo;
 import family.ChatMessage;
 
+
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+
+import java.io.*;
 import java.net.Socket;
 
 
-import java.io.IOException;
 import java.net.ServerSocket;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -113,6 +115,7 @@ private static void handleClientTextConnection(Socket client,
                 String mesaj = parts[2];
 
                 ChatMessage msg = ChatMessage.newBuilder()
+                        .setId(id)
                         .setText(mesaj)
                         .setFromHost(self.getHost())
                         .setFromPort(self.getPort())
@@ -120,9 +123,7 @@ private static void handleClientTextConnection(Socket client,
                         .build();
 
                 database.put(id, mesaj);
-
-
-                outtelnet.println("OK");
+                store(msg, outtelnet);
 
                 System.out.println("📝 Received from TCP: " + mesaj);
                 broadcastToFamily(registry, self, msg); //sonrasında güncellenecek
@@ -151,7 +152,24 @@ private static void handleClientTextConnection(Socket client,
     }
 }
 
-private static void broadcastToFamily(NodeRegistry registry,
+    private static void store(ChatMessage msg, PrintWriter outtelnet) {
+        String id = String.valueOf(msg.getId());
+        String text = msg.getText();
+        try {
+            Path dosyaYolu = Path.of("messages/", id + ".msg"); //uuid mantığı eklenecek
+            Files.createDirectories(dosyaYolu.getParent());
+            try (BufferedWriter bufferedWriter = Files.newBufferedWriter(
+                    dosyaYolu,
+                    StandardOpenOption.CREATE)) {
+                bufferedWriter.write(text);
+                outtelnet.println("OK");
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static void broadcastToFamily(NodeRegistry registry,
                                       NodeInfo self,
                                       ChatMessage msg) {
 
