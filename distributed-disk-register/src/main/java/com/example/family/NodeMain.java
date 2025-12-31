@@ -124,11 +124,11 @@ private static void handleClientTextConnection(Socket client,
                     outtelnet.println("HATA: Eksik parametre (GET ID)");
                     continue;
                 }
-                int id = Integer.parseInt(parts[1]);
-                //String mesaj = database.get(id);
+                MessageId id = MessageId.newBuilder()
+                        .setId(Integer.parseInt(parts[1]))
+                        .build();
 
-                //retrieve(id, outtelnet);
-
+                outtelnet.println(takeFromNodeList(registry, self, id));
             }
 
         }
@@ -170,8 +170,6 @@ private static void handleClientTextConnection(Socket client,
             stub.receiveChat(msg);
             result = stub_storage.store(msg).getResult();
 
-
-
             System.out.printf("Broadcasted message to %s:%d%n", n.getHost(), n.getPort());
 
         } catch (Exception e) {
@@ -184,6 +182,35 @@ private static void handleClientTextConnection(Socket client,
     outtelnet.println(result);
 }
 
+    //üyelerden mesajı çekmek için kullanılan fonk
+    private static String takeFromNodeList(NodeRegistry registry, NodeInfo self, MessageId id) {
+        List<NodeInfo> members = registry.snapshot();
+
+        for (NodeInfo n : members) {
+            // Kendimize tekrar gönderme
+            if (n.getHost().equals(self.getHost()) && n.getPort() == self.getPort()) {
+                continue;
+            }
+
+            ManagedChannel channel = null;
+            try {
+                channel = ManagedChannelBuilder
+                        .forAddress(n.getHost(), n.getPort())
+                        .usePlaintext()
+                        .build();
+
+                StorageServiceGrpc.StorageServiceBlockingStub stub2 =
+                        StorageServiceGrpc.newBlockingStub(channel);
+
+                return stub2.retrieve(id).getText();
+
+            } catch (Exception ignored) {
+            } finally {
+                if (channel != null) channel.shutdownNow();
+            }
+        }
+        return "NOT_FOUND";
+    }
 
     private static int findFreePort(int startPort) {
         int port = startPort;
