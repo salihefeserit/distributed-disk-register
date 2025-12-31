@@ -12,6 +12,7 @@ import io.grpc.Server;
 import io.grpc.ServerBuilder;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.Socket;
 
 
@@ -93,6 +94,19 @@ private static void handleClientTextConnection(Socket client,
             if (text.isEmpty()) continue;
 
             long ts = System.currentTimeMillis();
+
+            PrintWriter outtelnet = new PrintWriter(client.getOutputStream(), true);
+
+            String[] parts = text.split(" ");
+            String command = parts[0].toUpperCase();
+
+            if (command.equals("SET")) {
+                if (parts.length < 3) {
+                    outtelnet.println("SET ID <MESAJ>");
+                    continue;
+                }
+                outtelnet.println("OK");
+            }
 
             // Kendi üstüne de yaz
             System.out.println("📝 Received from TCP: " + text);
