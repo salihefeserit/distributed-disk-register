@@ -20,12 +20,15 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.*;
 
 public class NodeMain {
 
     private static final int START_PORT = 5555;
     private static final int PRINT_INTERVAL_SECONDS = 10;
+
+    private static Map<Integer, String> database = new ConcurrentHashMap<>();    //aşama 1-2 haritalama
 
     public static void main(String[] args) throws Exception {
         String host = "127.0.0.1";
@@ -105,21 +108,38 @@ private static void handleClientTextConnection(Socket client,
                     outtelnet.println("SET ID <MESAJ>");
                     continue;
                 }
+
+                int id = Integer.parseInt(parts[1]);
+                String mesaj = parts[2];
+
+                ChatMessage msg = ChatMessage.newBuilder()
+                        .setText(mesaj)
+                        .setFromHost(self.getHost())
+                        .setFromPort(self.getPort())
+                        .setTimestamp(ts)
+                        .build();
+
+                database.put(id, mesaj);
                 outtelnet.println("OK");
+
+                System.out.println("📝 Received from TCP: " + mesaj);
+                broadcastToFamily(registry, self, msg); //sonrasında güncellenecek
+
+            }else if (command.equals("GET")) {
+                if (parts.length < 2) {
+                    outtelnet.println("HATA: Eksik parametre (GET ID)");
+                    continue;
+                }
+                String id = parts[1];
+                String mesaj = database.get(id);
+
+                if (mesaj != null) {
+                    outtelnet.println("MESAJ: " + mesaj);
+                } else {
+                    outtelnet.println("HATA: Bu ID ile kayitli mesaj bulunamadi.");
+                }
             }
 
-            // Kendi üstüne de yaz
-            System.out.println("📝 Received from TCP: " + text);
-
-            ChatMessage msg = ChatMessage.newBuilder()
-                    .setText(text)
-                    .setFromHost(self.getHost())
-                    .setFromPort(self.getPort())
-                    .setTimestamp(ts)
-                    .build();
-
-            // Tüm family üyelerine broadcast et
-            broadcastToFamily(registry, self, msg);
         }
 
     } catch (IOException e) {
