@@ -3,6 +3,7 @@ package com.example.family;
 import family.NodeInfo;
 import org.w3c.dom.Node;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -21,7 +22,7 @@ public class NodeRegistry {
     }
 
     public List<NodeInfo> snapshot() {
-        return List.copyOf(nodes);
+        return new ArrayList<>(nodes);
     }
 
     public void remove(NodeInfo node) {

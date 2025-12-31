@@ -150,9 +150,13 @@ private static void handleClientTextConnection(Socket client,
                                       ChatMessage msg, PrintWriter outtelnet) {
 
     List<NodeInfo> members = registry.snapshot();
+    int tolerance = getTolerance();
     String result = "";
+    members.sort(Comparator.comparingInt(NodeInfo::getMessageCount));
+    int targetCount = Math.min(tolerance, members.size());
+    List<NodeInfo> targets = members.subList(0, targetCount);
 
-    for (NodeInfo n : members) {
+    for (NodeInfo n : targets) {
         // Kendimize tekrar gönderme
         // if (n.getHost().equals(self.getHost()) && n.getPort() == self.getPort()) {
         //     continue;
@@ -319,5 +323,19 @@ private static void handleClientTextConnection(Socket client,
 
     }, 5, 10, TimeUnit.SECONDS); // 5 sn sonra başla, 10 sn'de bir kontrol et
 }
+
+    public static int getTolerance() {
+        Properties props = new Properties();
+        try (FileInputStream fis = new FileInputStream("TOLERANCE.conf")) {
+            props.load(fis);
+            String val = props.getProperty("TOLERANCE");
+            if (val != null) {
+                return Integer.parseInt(val.trim());
+            }
+        } catch (IOException | NumberFormatException e) {
+            System.err.println("Uyarı! Yanlış veya eksik format!: " + 1);
+        }
+        return 1;
+    }
 
 }
