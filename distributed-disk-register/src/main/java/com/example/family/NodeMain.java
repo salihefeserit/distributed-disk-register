@@ -130,13 +130,13 @@ private static void handleClientTextConnection(Socket client,
                     outtelnet.println("HATA: Eksik parametre (GET ID)");
                     continue;
                 }
-                String id = parts[1];
+                int id = Integer.parseInt(parts[1]);
                 String mesaj = database.get(id);
 
                 if (mesaj != null) {
                     outtelnet.println("MESAJ: " + mesaj);
                 } else {
-                    outtelnet.println("HATA: Bu ID ile kayitli mesaj bulunamadi.");
+                    outtelnet.println("NOT_FOUND");
                 }
             }
 
