@@ -120,6 +120,8 @@ private static void handleClientTextConnection(Socket client,
                         .build();
 
                 database.put(id, mesaj);
+
+
                 outtelnet.println("OK");
 
                 System.out.println("📝 Received from TCP: " + mesaj);

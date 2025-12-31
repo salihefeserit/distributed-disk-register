@@ -41,11 +41,22 @@ private static final long serialVersionUID = 0L;
             family.ChatMessage.class, family.ChatMessage.Builder.class);
   }
 
-  public static final int TEXT_FIELD_NUMBER = 1;
+  public static final int ID_FIELD_NUMBER = 1;
+  private int id_ = 0;
+  /**
+   * <code>int32 id = 1;</code>
+   * @return The id.
+   */
+  @java.lang.Override
+  public int getId() {
+    return id_;
+  }
+
+  public static final int TEXT_FIELD_NUMBER = 2;
   @SuppressWarnings("serial")
   private volatile java.lang.Object text_ = "";
   /**
-   * <code>string text = 1;</code>
+   * <code>string text = 2;</code>
    * @return The text.
    */
   @java.lang.Override
@@ -62,7 +73,7 @@ private static final long serialVersionUID = 0L;
     }
   }
   /**
-   * <code>string text = 1;</code>
+   * <code>string text = 2;</code>
    * @return The bytes for text.
    */
   @java.lang.Override
@@ -80,11 +91,11 @@ private static final long serialVersionUID = 0L;
     }
   }
 
-  public static final int FROMHOST_FIELD_NUMBER = 2;
+  public static final int FROMHOST_FIELD_NUMBER = 3;
   @SuppressWarnings("serial")
   private volatile java.lang.Object fromHost_ = "";
   /**
-   * <code>string fromHost = 2;</code>
+   * <code>string fromHost = 3;</code>
    * @return The fromHost.
    */
   @java.lang.Override
@@ -101,7 +112,7 @@ private static final long serialVersionUID = 0L;
     }
   }
   /**
-   * <code>string fromHost = 2;</code>
+   * <code>string fromHost = 3;</code>
    * @return The bytes for fromHost.
    */
   @java.lang.Override
@@ -119,10 +130,10 @@ private static final long serialVersionUID = 0L;
     }
   }
 
-  public static final int FROMPORT_FIELD_NUMBER = 3;
+  public static final int FROMPORT_FIELD_NUMBER = 4;
   private int fromPort_ = 0;
   /**
-   * <code>int32 fromPort = 3;</code>
+   * <code>int32 fromPort = 4;</code>
    * @return The fromPort.
    */
   @java.lang.Override
@@ -130,10 +141,10 @@ private static final long serialVersionUID = 0L;
     return fromPort_;
   }
 
-  public static final int TIMESTAMP_FIELD_NUMBER = 4;
+  public static final int TIMESTAMP_FIELD_NUMBER = 5;
   private long timestamp_ = 0L;
   /**
-   * <code>int64 timestamp = 4;</code>
+   * <code>int64 timestamp = 5;</code>
    * @return The timestamp.
    */
   @java.lang.Override
@@ -155,17 +166,20 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
+    if (id_ != 0) {
+      output.writeInt32(1, id_);
+    }
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(text_)) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 1, text_);
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 2, text_);
     }
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(fromHost_)) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 2, fromHost_);
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 3, fromHost_);
     }
     if (fromPort_ != 0) {
-      output.writeInt32(3, fromPort_);
+      output.writeInt32(4, fromPort_);
     }
     if (timestamp_ != 0L) {
-      output.writeInt64(4, timestamp_);
+      output.writeInt64(5, timestamp_);
     }
     getUnknownFields().writeTo(output);
   }
@@ -176,19 +190,23 @@ private static final long serialVersionUID = 0L;
     if (size != -1) return size;
 
     size = 0;
+    if (id_ != 0) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeInt32Size(1, id_);
+    }
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(text_)) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, text_);
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, text_);
     }
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(fromHost_)) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, fromHost_);
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, fromHost_);
     }
     if (fromPort_ != 0) {
       size += com.google.protobuf.CodedOutputStream
-        .computeInt32Size(3, fromPort_);
+        .computeInt32Size(4, fromPort_);
     }
     if (timestamp_ != 0L) {
       size += com.google.protobuf.CodedOutputStream
-        .computeInt64Size(4, timestamp_);
+        .computeInt64Size(5, timestamp_);
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -205,6 +223,8 @@ private static final long serialVersionUID = 0L;
     }
     family.ChatMessage other = (family.ChatMessage) obj;
 
+    if (getId()
+        != other.getId()) return false;
     if (!getText()
         .equals(other.getText())) return false;
     if (!getFromHost()
@@ -224,6 +244,8 @@ private static final long serialVersionUID = 0L;
     }
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
+    hash = (37 * hash) + ID_FIELD_NUMBER;
+    hash = (53 * hash) + getId();
     hash = (37 * hash) + TEXT_FIELD_NUMBER;
     hash = (53 * hash) + getText().hashCode();
     hash = (37 * hash) + FROMHOST_FIELD_NUMBER;
@@ -364,6 +386,7 @@ private static final long serialVersionUID = 0L;
     public Builder clear() {
       super.clear();
       bitField0_ = 0;
+      id_ = 0;
       text_ = "";
       fromHost_ = "";
       fromPort_ = 0;
@@ -402,15 +425,18 @@ private static final long serialVersionUID = 0L;
     private void buildPartial0(family.ChatMessage result) {
       int from_bitField0_ = bitField0_;
       if (((from_bitField0_ & 0x00000001) != 0)) {
-        result.text_ = text_;
+        result.id_ = id_;
       }
       if (((from_bitField0_ & 0x00000002) != 0)) {
-        result.fromHost_ = fromHost_;
+        result.text_ = text_;
       }
       if (((from_bitField0_ & 0x00000004) != 0)) {
-        result.fromPort_ = fromPort_;
+        result.fromHost_ = fromHost_;
       }
       if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.fromPort_ = fromPort_;
+      }
+      if (((from_bitField0_ & 0x00000010) != 0)) {
         result.timestamp_ = timestamp_;
       }
     }
@@ -459,14 +485,17 @@ private static final long serialVersionUID = 0L;
 
     public Builder mergeFrom(family.ChatMessage other) {
       if (other == family.ChatMessage.getDefaultInstance()) return this;
+      if (other.getId() != 0) {
+        setId(other.getId());
+      }
       if (!other.getText().isEmpty()) {
         text_ = other.text_;
-        bitField0_ |= 0x00000001;
+        bitField0_ |= 0x00000002;
         onChanged();
       }
       if (!other.getFromHost().isEmpty()) {
         fromHost_ = other.fromHost_;
-        bitField0_ |= 0x00000002;
+        bitField0_ |= 0x00000004;
         onChanged();
       }
       if (other.getFromPort() != 0) {
@@ -501,26 +530,31 @@ private static final long serialVersionUID = 0L;
             case 0:
               done = true;
               break;
-            case 10: {
-              text_ = input.readStringRequireUtf8();
+            case 8: {
+              id_ = input.readInt32();
               bitField0_ |= 0x00000001;
               break;
-            } // case 10
+            } // case 8
             case 18: {
-              fromHost_ = input.readStringRequireUtf8();
+              text_ = input.readStringRequireUtf8();
               bitField0_ |= 0x00000002;
               break;
             } // case 18
-            case 24: {
-              fromPort_ = input.readInt32();
+            case 26: {
+              fromHost_ = input.readStringRequireUtf8();
               bitField0_ |= 0x00000004;
               break;
-            } // case 24
+            } // case 26
             case 32: {
-              timestamp_ = input.readInt64();
+              fromPort_ = input.readInt32();
               bitField0_ |= 0x00000008;
               break;
             } // case 32
+            case 40: {
+              timestamp_ = input.readInt64();
+              bitField0_ |= 0x00000010;
+              break;
+            } // case 40
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -538,9 +572,41 @@ private static final long serialVersionUID = 0L;
     }
     private int bitField0_;
 
+    private int id_ ;
+    /**
+     * <code>int32 id = 1;</code>
+     * @return The id.
+     */
+    @java.lang.Override
+    public int getId() {
+      return id_;
+    }
+    /**
+     * <code>int32 id = 1;</code>
+     * @param value The id to set.
+     * @return This builder for chaining.
+     */
+    public Builder setId(int value) {
+
+      id_ = value;
+      bitField0_ |= 0x00000001;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>int32 id = 1;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearId() {
+      bitField0_ = (bitField0_ & ~0x00000001);
+      id_ = 0;
+      onChanged();
+      return this;
+    }
+
     private java.lang.Object text_ = "";
     /**
-     * <code>string text = 1;</code>
+     * <code>string text = 2;</code>
      * @return The text.
      */
     public java.lang.String getText() {
@@ -556,7 +622,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string text = 1;</code>
+     * <code>string text = 2;</code>
      * @return The bytes for text.
      */
     public com.google.protobuf.ByteString
@@ -573,7 +639,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string text = 1;</code>
+     * <code>string text = 2;</code>
      * @param value The text to set.
      * @return This builder for chaining.
      */
@@ -581,22 +647,22 @@ private static final long serialVersionUID = 0L;
         java.lang.String value) {
       if (value == null) { throw new NullPointerException(); }
       text_ = value;
-      bitField0_ |= 0x00000001;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
     /**
-     * <code>string text = 1;</code>
+     * <code>string text = 2;</code>
      * @return This builder for chaining.
      */
     public Builder clearText() {
       text_ = getDefaultInstance().getText();
-      bitField0_ = (bitField0_ & ~0x00000001);
+      bitField0_ = (bitField0_ & ~0x00000002);
       onChanged();
       return this;
     }
     /**
-     * <code>string text = 1;</code>
+     * <code>string text = 2;</code>
      * @param value The bytes for text to set.
      * @return This builder for chaining.
      */
@@ -605,14 +671,14 @@ private static final long serialVersionUID = 0L;
       if (value == null) { throw new NullPointerException(); }
       checkByteStringIsUtf8(value);
       text_ = value;
-      bitField0_ |= 0x00000001;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
 
     private java.lang.Object fromHost_ = "";
     /**
-     * <code>string fromHost = 2;</code>
+     * <code>string fromHost = 3;</code>
      * @return The fromHost.
      */
     public java.lang.String getFromHost() {
@@ -628,7 +694,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string fromHost = 2;</code>
+     * <code>string fromHost = 3;</code>
      * @return The bytes for fromHost.
      */
     public com.google.protobuf.ByteString
@@ -645,7 +711,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string fromHost = 2;</code>
+     * <code>string fromHost = 3;</code>
      * @param value The fromHost to set.
      * @return This builder for chaining.
      */
@@ -653,22 +719,22 @@ private static final long serialVersionUID = 0L;
         java.lang.String value) {
       if (value == null) { throw new NullPointerException(); }
       fromHost_ = value;
-      bitField0_ |= 0x00000002;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
     /**
-     * <code>string fromHost = 2;</code>
+     * <code>string fromHost = 3;</code>
      * @return This builder for chaining.
      */
     public Builder clearFromHost() {
       fromHost_ = getDefaultInstance().getFromHost();
-      bitField0_ = (bitField0_ & ~0x00000002);
+      bitField0_ = (bitField0_ & ~0x00000004);
       onChanged();
       return this;
     }
     /**
-     * <code>string fromHost = 2;</code>
+     * <code>string fromHost = 3;</code>
      * @param value The bytes for fromHost to set.
      * @return This builder for chaining.
      */
@@ -677,14 +743,14 @@ private static final long serialVersionUID = 0L;
       if (value == null) { throw new NullPointerException(); }
       checkByteStringIsUtf8(value);
       fromHost_ = value;
-      bitField0_ |= 0x00000002;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
 
     private int fromPort_ ;
     /**
-     * <code>int32 fromPort = 3;</code>
+     * <code>int32 fromPort = 4;</code>
      * @return The fromPort.
      */
     @java.lang.Override
@@ -692,23 +758,23 @@ private static final long serialVersionUID = 0L;
       return fromPort_;
     }
     /**
-     * <code>int32 fromPort = 3;</code>
+     * <code>int32 fromPort = 4;</code>
      * @param value The fromPort to set.
      * @return This builder for chaining.
      */
     public Builder setFromPort(int value) {
 
       fromPort_ = value;
-      bitField0_ |= 0x00000004;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
     /**
-     * <code>int32 fromPort = 3;</code>
+     * <code>int32 fromPort = 4;</code>
      * @return This builder for chaining.
      */
     public Builder clearFromPort() {
-      bitField0_ = (bitField0_ & ~0x00000004);
+      bitField0_ = (bitField0_ & ~0x00000008);
       fromPort_ = 0;
       onChanged();
       return this;
@@ -716,7 +782,7 @@ private static final long serialVersionUID = 0L;
 
     private long timestamp_ ;
     /**
-     * <code>int64 timestamp = 4;</code>
+     * <code>int64 timestamp = 5;</code>
      * @return The timestamp.
      */
     @java.lang.Override
@@ -724,23 +790,23 @@ private static final long serialVersionUID = 0L;
       return timestamp_;
     }
     /**
-     * <code>int64 timestamp = 4;</code>
+     * <code>int64 timestamp = 5;</code>
      * @param value The timestamp to set.
      * @return This builder for chaining.
      */
     public Builder setTimestamp(long value) {
 
       timestamp_ = value;
-      bitField0_ |= 0x00000008;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
     /**
-     * <code>int64 timestamp = 4;</code>
+     * <code>int64 timestamp = 5;</code>
      * @return This builder for chaining.
      */
     public Builder clearTimestamp() {
-      bitField0_ = (bitField0_ & ~0x00000008);
+      bitField0_ = (bitField0_ & ~0x00000010);
       timestamp_ = 0L;
       onChanged();
       return this;

@@ -47,13 +47,14 @@ public final class FamilyProto {
       "\n\014family.proto\022\006family\"&\n\010NodeInfo\022\014\n\004ho" +
       "st\030\001 \001(\t\022\014\n\004port\030\002 \001(\005\"/\n\nFamilyView\022!\n\007" +
       "members\030\001 \003(\0132\020.family.NodeInfo\"\007\n\005Empty" +
-      "\"R\n\013ChatMessage\022\014\n\004text\030\001 \001(\t\022\020\n\010fromHos" +
-      "t\030\002 \001(\t\022\020\n\010fromPort\030\003 \001(\005\022\021\n\ttimestamp\030\004" +
-      " \001(\0032\240\001\n\rFamilyService\022,\n\004Join\022\020.family." +
-      "NodeInfo\032\022.family.FamilyView\022.\n\tGetFamil" +
-      "y\022\r.family.Empty\032\022.family.FamilyView\0221\n\013" +
-      "ReceiveChat\022\023.family.ChatMessage\032\r.famil" +
-      "y.EmptyB\027\n\006familyB\013FamilyProtoP\001b\006proto3"
+      "\"^\n\013ChatMessage\022\n\n\002id\030\001 \001(\005\022\014\n\004text\030\002 \001(" +
+      "\t\022\020\n\010fromHost\030\003 \001(\t\022\020\n\010fromPort\030\004 \001(\005\022\021\n" +
+      "\ttimestamp\030\005 \001(\0032\240\001\n\rFamilyService\022,\n\004Jo" +
+      "in\022\020.family.NodeInfo\032\022.family.FamilyView" +
+      "\022.\n\tGetFamily\022\r.family.Empty\032\022.family.Fa" +
+      "milyView\0221\n\013ReceiveChat\022\023.family.ChatMes" +
+      "sage\032\r.family.EmptyB\027\n\006familyB\013FamilyPro" +
+      "toP\001b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -82,7 +83,7 @@ public final class FamilyProto {
     internal_static_family_ChatMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_family_ChatMessage_descriptor,
-        new java.lang.String[] { "Text", "FromHost", "FromPort", "Timestamp", });
+        new java.lang.String[] { "Id", "Text", "FromHost", "FromPort", "Timestamp", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)
