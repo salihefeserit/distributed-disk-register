@@ -152,7 +152,7 @@ private static void handleClientTextConnection(Socket client,
     String result = "";
 
     for (NodeInfo n : members) {
-        // Kendimize tekrar gönderme
+        // Kendimize tekrar gönderme.
         if (n.getHost().equals(self.getHost()) && n.getPort() == self.getPort()) {
             continue;
         }
