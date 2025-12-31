@@ -4,8 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1759e982-cebf-4ce9-9725-89295a431648" name="Changes" comment="StorageServiceImpl dosyası içerisindeki store fonksiyonuna uuid mantığı eklendi.">
+    <list default="true" id="1759e982-cebf-4ce9-9725-89295a431648" name="Changes" comment="StorageServiceImpl dosyası içerisindeki store fonksiyonuna hata fırlatma kısmı düzenlendi.">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/src/main/java/com/example/family/NodeMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/distributed-disk-register/src/main/java/com/example/family/NodeMain.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/distributed-disk-register/src/main/java/com/example/family/StorageServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/distributed-disk-register/src/main/java/com/example/family/StorageServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/messages/0.msg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/messages/10.msg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/messages/20.msg" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -162,7 +167,15 @@
       <option name="project" value="LOCAL" />
       <updated>1767185733297</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="StorageServiceImpl dosyası içerisindeki store fonksiyonuna hata fırlatma kısmı düzenlendi.">
+      <option name="closed" value="true" />
+      <created>1767185769439</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1767185769439</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -176,6 +189,7 @@
     <MESSAGE value="StorageServiceImpl dosyası oluşturulup çocuklar arası haberleşmeye ön hazırlık yapıldı." />
     <MESSAGE value="StorageServiceImpl dosyası içerisindeki store fonksiyonu çocuklara gönderim için düzenlendi." />
     <MESSAGE value="StorageServiceImpl dosyası içerisindeki store fonksiyonuna uuid mantığı eklendi." />
-    <option name="LAST_COMMIT_MESSAGE" value="StorageServiceImpl dosyası içerisindeki store fonksiyonuna uuid mantığı eklendi." />
+    <MESSAGE value="StorageServiceImpl dosyası içerisindeki store fonksiyonuna hata fırlatma kısmı düzenlendi." />
+    <option name="LAST_COMMIT_MESSAGE" value="StorageServiceImpl dosyası içerisindeki store fonksiyonuna hata fırlatma kısmı düzenlendi." />
   </component>
 </project>

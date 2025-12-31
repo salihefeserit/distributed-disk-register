@@ -117,7 +117,7 @@ private static void handleClientTextConnection(Socket client,
                 //store(msg, outtelnet);
 
                 System.out.println("📝 Received from TCP: " + mesaj);
-                broadcastToFamily(registry, self, msg); //sonrasında güncellenecek
+                broadcastToFamily(registry, self, msg, outtelnet); //sonrasında güncellenecek
 
             }else if (command.equals("GET")) {
                 if (parts.length < 2) {
@@ -143,7 +143,7 @@ private static void handleClientTextConnection(Socket client,
 
     private static void broadcastToFamily(NodeRegistry registry,
                                       NodeInfo self,
-                                      ChatMessage msg) {
+                                      ChatMessage msg, PrintWriter outtelnet) {
 
     List<NodeInfo> members = registry.snapshot();
     String result = "";
@@ -170,6 +170,8 @@ private static void handleClientTextConnection(Socket client,
             stub.receiveChat(msg);
             result = stub_storage.store(msg).getResult();
 
+
+
             System.out.printf("Broadcasted message to %s:%d%n", n.getHost(), n.getPort());
 
         } catch (Exception e) {
@@ -179,6 +181,7 @@ private static void handleClientTextConnection(Socket client,
             if (channel != null) channel.shutdownNow();
         }
     }
+    outtelnet.println(result);
 }
 
 

@@ -1,8 +1,10 @@
 package com.example.family;
 
 import family.ChatMessage;
+import family.MessageId;
 import family.StorageServiceGrpc;
 import family.StoreResult;
+import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
 
 import java.io.*;
@@ -46,15 +48,24 @@ public class StorageServiceImpl extends StorageServiceGrpc.StorageServiceImplBas
         }
     }
 
-    public void retrieve(Integer id, PrintWriter out) {
-        try (BufferedReader reader = new BufferedReader(new FileReader("messages/" + id + ".msg"))) {
+    @Override
+    public void retrieve(MessageId id, StreamObserver<ChatMessage> responseObserver) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("messages/" + RUN_ID + "/" + id.getId() + ".msg"))) {
             String line = reader.readLine();
 
-            out.println(line);
+            ChatMessage msg = ChatMessage.newBuilder()
+                    .setId(id.getId())
+                    .setText(line)
+                    .build();
+
+            responseObserver.onNext(msg);
+            responseObserver.onCompleted();
+        } catch (FileNotFoundException e) {
+            responseObserver.onError(
+                    Status.NOT_FOUND.asRuntimeException()
+            );
         } catch (IOException e) {
             System.out.println(e.getMessage());
-            out.println("NOT_FOUND");
         }
-
     }
 }
