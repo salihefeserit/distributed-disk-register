@@ -42,7 +42,7 @@ public class StorageServiceImpl extends StorageServiceGrpc.StorageServiceImplBas
             responseObserver.onNext(status);
             responseObserver.onCompleted();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            responseObserver.onError(e);
         }
     }
 
