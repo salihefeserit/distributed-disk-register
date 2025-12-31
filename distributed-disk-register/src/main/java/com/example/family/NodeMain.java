@@ -117,7 +117,6 @@ private static void handleClientTextConnection(Socket client,
                 Map<Integer, List<NodeInfo>> harita = new HashMap<>();
                 harita.put(id, holders);
                 nodes.add(harita);
-                //outtelnet.println(nodes);
 
                 System.out.println("📝 Received from TCP: " + mesaj);
 
