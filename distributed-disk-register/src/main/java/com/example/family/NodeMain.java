@@ -134,13 +134,10 @@ private static void handleClientTextConnection(Socket client,
                     continue;
                 }
                 int id = Integer.parseInt(parts[1]);
-                String mesaj = database.get(id);
+                //String mesaj = database.get(id);
 
-                if (mesaj != null) {
-                    outtelnet.println("MESAJ: " + mesaj);
-                } else {
-                    outtelnet.println("NOT_FOUND");
-                }
+                retrieve(id, outtelnet);
+
             }
 
         }
@@ -168,7 +165,17 @@ private static void handleClientTextConnection(Socket client,
             throw new RuntimeException(e);
         }
     }
+    private static void retrieve(Integer id, PrintWriter out) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("messages/" + id + ".msg"))) {
+            String line = reader.readLine();
 
+            out.println(line);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            out.println("NOT_FOUND");
+        }
+
+    }
     private static void broadcastToFamily(NodeRegistry registry,
                                       NodeInfo self,
                                       ChatMessage msg) {
