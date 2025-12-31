@@ -146,7 +146,7 @@ private static void broadcastToFamily(NodeRegistry registry,
                     n.getHost(), n.getPort(), e.getMessage());
         } finally {
             if (channel != null) channel.shutdownNow();
-        }//.
+        }//..
     }
 }
 
