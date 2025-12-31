@@ -13,8 +13,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.*;
 
 public class NodeMain {
@@ -22,8 +21,8 @@ public class NodeMain {
     private static final int START_PORT = 5555;
     private static final int PRINT_INTERVAL_SECONDS = 10;
 
-    private static Map<Integer, String> database = new ConcurrentHashMap<>();    //aşama 1-2 haritalama
-
+    //private static Map<Integer, String> database = new ConcurrentHashMap<>();    //aşama 1-2 haritalama
+    private static final Set<Map<Integer, List<NodeInfo>>> nodes = ConcurrentHashMap.newKeySet();
     public static void main(String[] args) throws Exception {
         String host = "127.0.0.1";
         int port = findFreePort(START_PORT);
@@ -49,6 +48,7 @@ public class NodeMain {
                 // Eğer bu ilk node ise (port 5555), TCP 6666'da text dinlesin
                 if (port == START_PORT) {
                     startLeaderTextListener(registry, self);
+
                 }
 
                 discoverExistingNodes(host, port, registry, self);
@@ -113,10 +113,14 @@ private static void handleClientTextConnection(Socket client,
                         .setTimestamp(ts)
                         .build();
 
-                database.put(id, mesaj);
-                //store(msg, outtelnet);
+                List<NodeInfo> holders = registry.snapshot();
+                Map<Integer, List<NodeInfo>> harita = new HashMap<>();
+                harita.put(id, holders);
+                nodes.add(harita);
+                //outtelnet.println(nodes);
 
                 System.out.println("📝 Received from TCP: " + mesaj);
+
                 broadcastToFamily(registry, self, msg, outtelnet); //sonrasında güncellenecek
 
             }else if (command.equals("GET")) {

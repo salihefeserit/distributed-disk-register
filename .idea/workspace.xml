@@ -4,8 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1759e982-cebf-4ce9-9725-89295a431648" name="Changes" comment="StorageServiceImpl dosyası içerisindeki retrive fonksiyonu düzenlendi.">
+    <list default="true" id="1759e982-cebf-4ce9-9725-89295a431648" name="Changes" comment="NodeMain dosyası içerisindeki takeFromNodeList fonksiyonu eklendi bu fonksiyon sayesinde retrive fonksiyonunu kullandık.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/messages/18b1d36a-011d-4ac7-a5fb-a541eb946328/10.msg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/messages/3f8d9347-840a-47c4-a80d-63afd4853331/10.msg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/messages/bd19182e-35dd-420d-9c13-fb3f57562dd7/10.msg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/messages/d95fda07-3fb4-40c3-a8b4-b9816d7a4f5f/10.msg" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/distributed-disk-register/src/main/java/com/example/family/NodeMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/distributed-disk-register/src/main/java/com/example/family/NodeMain.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -179,7 +183,15 @@
       <option name="project" value="LOCAL" />
       <updated>1767187353892</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="NodeMain dosyası içerisindeki takeFromNodeList fonksiyonu eklendi bu fonksiyon sayesinde retrive fonksiyonunu kullandık.">
+      <option name="closed" value="true" />
+      <created>1767187707496</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1767187707496</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -195,6 +207,7 @@
     <MESSAGE value="StorageServiceImpl dosyası içerisindeki store fonksiyonuna uuid mantığı eklendi." />
     <MESSAGE value="StorageServiceImpl dosyası içerisindeki store fonksiyonuna hata fırlatma kısmı düzenlendi." />
     <MESSAGE value="StorageServiceImpl dosyası içerisindeki retrive fonksiyonu düzenlendi." />
-    <option name="LAST_COMMIT_MESSAGE" value="StorageServiceImpl dosyası içerisindeki retrive fonksiyonu düzenlendi." />
+    <MESSAGE value="NodeMain dosyası içerisindeki takeFromNodeList fonksiyonu eklendi bu fonksiyon sayesinde retrive fonksiyonunu kullandık." />
+    <option name="LAST_COMMIT_MESSAGE" value="NodeMain dosyası içerisindeki takeFromNodeList fonksiyonu eklendi bu fonksiyon sayesinde retrive fonksiyonunu kullandık." />
   </component>
 </project>
