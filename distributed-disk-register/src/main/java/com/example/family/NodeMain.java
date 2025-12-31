@@ -146,6 +146,7 @@ private static void handleClientTextConnection(Socket client,
                                       ChatMessage msg) {
 
     List<NodeInfo> members = registry.snapshot();
+    String result = "";
 
     for (NodeInfo n : members) {
         // Kendimize tekrar gönderme
@@ -167,6 +168,7 @@ private static void handleClientTextConnection(Socket client,
                     StorageServiceGrpc.newBlockingStub(channel);
 
             stub.receiveChat(msg);
+            result = stub_storage.store(msg).getResult();
 
             System.out.printf("Broadcasted message to %s:%d%n", n.getHost(), n.getPort());
 

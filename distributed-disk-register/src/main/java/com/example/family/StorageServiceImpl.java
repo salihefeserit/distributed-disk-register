@@ -2,15 +2,29 @@ package com.example.family;
 
 import family.ChatMessage;
 import family.StorageServiceGrpc;
+import family.StoreResult;
+import io.grpc.stub.StreamObserver;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.util.UUID;
 
 public class StorageServiceImpl extends StorageServiceGrpc.StorageServiceImplBase{
+    private final String RUN_ID;
+    private int messageCount;
 
-    public void store(ChatMessage msg, PrintWriter outtelnet) {
+    // Uyedeki StorageService ne zaman olusturulduysa
+    // o zamanin damgasini depolama klasoru yap
+    // degistirilebilir.
+    public StorageServiceImpl() {
+        this.messageCount = 0;
+        this.RUN_ID = UUID.randomUUID().toString();
+    }
+
+    @Override
+    public void store(ChatMessage msg, StreamObserver<StoreResult> responseObserver) {
         String id = String.valueOf(msg.getId());
         String text = msg.getText();
         try {
@@ -20,12 +34,18 @@ public class StorageServiceImpl extends StorageServiceGrpc.StorageServiceImplBas
                     dosyaYolu,
                     StandardOpenOption.CREATE)) {
                 bufferedWriter.write(text);
-                outtelnet.println("OK");
             }
+            StoreResult status = StoreResult.newBuilder()
+                    .setResult("OK")
+                    .build();
+
+            responseObserver.onNext(status);
+            responseObserver.onCompleted();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
+
     public void retrieve(Integer id, PrintWriter out) {
         try (BufferedReader reader = new BufferedReader(new FileReader("messages/" + id + ".msg"))) {
             String line = reader.readLine();
