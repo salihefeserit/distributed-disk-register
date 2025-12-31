@@ -30,6 +30,7 @@ public class NodeMain {
         NodeInfo self = NodeInfo.newBuilder()
                 .setHost(host)
                 .setPort(port)
+                .setMessageCount(0)
                 .build();
 
         NodeRegistry registry = new NodeRegistry();
@@ -153,9 +154,9 @@ private static void handleClientTextConnection(Socket client,
 
     for (NodeInfo n : members) {
         // Kendimize tekrar gönderme
-        if (n.getHost().equals(self.getHost()) && n.getPort() == self.getPort()) {
-            continue;
-        }
+        // if (n.getHost().equals(self.getHost()) && n.getPort() == self.getPort()) {
+        //     continue;
+        // }
 
         ManagedChannel channel = null;
         try {
@@ -174,6 +175,7 @@ private static void handleClientTextConnection(Socket client,
             result = stub_storage.store(msg).getResult();
 
             System.out.printf("Broadcasted message to %s:%d%n", n.getHost(), n.getPort());
+            registry.increaseCount(n);
 
         } catch (Exception e) {
             System.err.printf("Failed to send to %s:%d (%s)%n",
@@ -191,9 +193,9 @@ private static void handleClientTextConnection(Socket client,
 
         for (NodeInfo n : members) {
             // Kendimize tekrar gönderme
-            if (n.getHost().equals(self.getHost()) && n.getPort() == self.getPort()) {
-                continue;
-            }
+            // if (n.getHost().equals(self.getHost()) && n.getPort() == self.getPort()) {
+            //     continue;
+            // }
 
             ManagedChannel channel = null;
             try {
@@ -267,9 +269,10 @@ private static void handleClientTextConnection(Socket client,
 
             for (NodeInfo n : members) {
                 boolean isMe = n.getHost().equals(self.getHost()) && n.getPort() == self.getPort();
-                System.out.printf(" - %s:%d%s%n",
+                System.out.printf(" - %s:%d - %d %s%n",
                         n.getHost(),
                         n.getPort(),
+                        n.getMessageCount(),
                         isMe ? " (me)" : "");
             }
             System.out.println("======================================");

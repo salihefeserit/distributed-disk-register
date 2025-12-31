@@ -90,6 +90,17 @@ private static final long serialVersionUID = 0L;
     return port_;
   }
 
+  public static final int MESSAGECOUNT_FIELD_NUMBER = 3;
+  private int messageCount_ = 0;
+  /**
+   * <code>int32 messageCount = 3;</code>
+   * @return The messageCount.
+   */
+  @java.lang.Override
+  public int getMessageCount() {
+    return messageCount_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -110,6 +121,9 @@ private static final long serialVersionUID = 0L;
     if (port_ != 0) {
       output.writeInt32(2, port_);
     }
+    if (messageCount_ != 0) {
+      output.writeInt32(3, messageCount_);
+    }
     getUnknownFields().writeTo(output);
   }
 
@@ -125,6 +139,10 @@ private static final long serialVersionUID = 0L;
     if (port_ != 0) {
       size += com.google.protobuf.CodedOutputStream
         .computeInt32Size(2, port_);
+    }
+    if (messageCount_ != 0) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeInt32Size(3, messageCount_);
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -145,6 +163,8 @@ private static final long serialVersionUID = 0L;
         .equals(other.getHost())) return false;
     if (getPort()
         != other.getPort()) return false;
+    if (getMessageCount()
+        != other.getMessageCount()) return false;
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -160,6 +180,8 @@ private static final long serialVersionUID = 0L;
     hash = (53 * hash) + getHost().hashCode();
     hash = (37 * hash) + PORT_FIELD_NUMBER;
     hash = (53 * hash) + getPort();
+    hash = (37 * hash) + MESSAGECOUNT_FIELD_NUMBER;
+    hash = (53 * hash) + getMessageCount();
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -293,6 +315,7 @@ private static final long serialVersionUID = 0L;
       bitField0_ = 0;
       host_ = "";
       port_ = 0;
+      messageCount_ = 0;
       return this;
     }
 
@@ -331,6 +354,9 @@ private static final long serialVersionUID = 0L;
       }
       if (((from_bitField0_ & 0x00000002) != 0)) {
         result.port_ = port_;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.messageCount_ = messageCount_;
       }
     }
 
@@ -386,6 +412,9 @@ private static final long serialVersionUID = 0L;
       if (other.getPort() != 0) {
         setPort(other.getPort());
       }
+      if (other.getMessageCount() != 0) {
+        setMessageCount(other.getMessageCount());
+      }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
       return this;
@@ -422,6 +451,11 @@ private static final long serialVersionUID = 0L;
               bitField0_ |= 0x00000002;
               break;
             } // case 16
+            case 24: {
+              messageCount_ = input.readInt32();
+              bitField0_ |= 0x00000004;
+              break;
+            } // case 24
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -539,6 +573,38 @@ private static final long serialVersionUID = 0L;
     public Builder clearPort() {
       bitField0_ = (bitField0_ & ~0x00000002);
       port_ = 0;
+      onChanged();
+      return this;
+    }
+
+    private int messageCount_ ;
+    /**
+     * <code>int32 messageCount = 3;</code>
+     * @return The messageCount.
+     */
+    @java.lang.Override
+    public int getMessageCount() {
+      return messageCount_;
+    }
+    /**
+     * <code>int32 messageCount = 3;</code>
+     * @param value The messageCount to set.
+     * @return This builder for chaining.
+     */
+    public Builder setMessageCount(int value) {
+
+      messageCount_ = value;
+      bitField0_ |= 0x00000004;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>int32 messageCount = 3;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearMessageCount() {
+      bitField0_ = (bitField0_ & ~0x00000004);
+      messageCount_ = 0;
       onChanged();
       return this;
     }

@@ -5,12 +5,103 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1759e982-cebf-4ce9-9725-89295a431648" name="Changes" comment="NodeMain dosyası içerisindeki takeFromNodeList fonksiyonu eklendi bu fonksiyon sayesinde retrive fonksiyonunu kullandık.">
+      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/distributed-disk-register.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/distributed-disk-register/messages/18b1d36a-011d-4ac7-a5fb-a541eb946328/10.msg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/distributed-disk-register/messages/3f8d9347-840a-47c4-a80d-63afd4853331/10.msg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/distributed-disk-register/messages/bd19182e-35dd-420d-9c13-fb3f57562dd7/10.msg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/distributed-disk-register/messages/d95fda07-3fb4-40c3-a8b4-b9816d7a4f5f/10.msg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/messages/8b9dd17d-0a69-4c83-be6f-7539e699dd48/10.msg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/messages/8b9dd17d-0a69-4c83-be6f-7539e699dd48/100.msg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/messages/a0aa5a23-6725-4ae2-8eb9-dd210e746ae4/10.msg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/messages/a0aa5a23-6725-4ae2-8eb9-dd210e746ae4/100.msg" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/distributed-disk-register/src/main/java/com/example/family/NodeMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/distributed-disk-register/src/main/java/com/example/family/NodeMain.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/src/main/java/com/example/family/NodeRegistry.java" beforeDir="false" afterPath="$PROJECT_DIR$/distributed-disk-register/src/main/java/com/example/family/NodeRegistry.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/src/main/java/com/example/family/StorageServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/distributed-disk-register/src/main/java/com/example/family/StorageServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/src/main/proto/family.proto" beforeDir="false" afterPath="$PROJECT_DIR$/distributed-disk-register/src/main/proto/family.proto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/classes/family.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/generated-sources/protobuf/java/family/FamilyProto.java" beforeDir="false" afterPath="$PROJECT_DIR$/distributed-disk-register/target/generated-sources/protobuf/java/family/FamilyProto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/generated-sources/protobuf/java/family/NodeInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/distributed-disk-register/target/generated-sources/protobuf/java/family/NodeInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/generated-sources/protobuf/java/family/NodeInfoOrBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/distributed-disk-register/target/generated-sources/protobuf/java/family/NodeInfoOrBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/distributed-disk-register/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/distributed-disk-register/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/60ee4ea6ed851538fffb4b443ff01bd3/google/protobuf/any.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/60ee4ea6ed851538fffb4b443ff01bd3/google/protobuf/api.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/60ee4ea6ed851538fffb4b443ff01bd3/google/protobuf/descriptor.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/60ee4ea6ed851538fffb4b443ff01bd3/google/protobuf/duration.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/60ee4ea6ed851538fffb4b443ff01bd3/google/protobuf/empty.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/60ee4ea6ed851538fffb4b443ff01bd3/google/protobuf/field_mask.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/60ee4ea6ed851538fffb4b443ff01bd3/google/protobuf/source_context.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/60ee4ea6ed851538fffb4b443ff01bd3/google/protobuf/struct.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/60ee4ea6ed851538fffb4b443ff01bd3/google/protobuf/timestamp.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/60ee4ea6ed851538fffb4b443ff01bd3/google/protobuf/type.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/60ee4ea6ed851538fffb4b443ff01bd3/google/protobuf/wrappers.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/7fb156b0eb342a14f4ea7d6869e1f0fd/google/api/annotations.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/7fb156b0eb342a14f4ea7d6869e1f0fd/google/api/auth.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/7fb156b0eb342a14f4ea7d6869e1f0fd/google/api/backend.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/7fb156b0eb342a14f4ea7d6869e1f0fd/google/api/billing.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/7fb156b0eb342a14f4ea7d6869e1f0fd/google/api/client.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/7fb156b0eb342a14f4ea7d6869e1f0fd/google/api/config_change.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/7fb156b0eb342a14f4ea7d6869e1f0fd/google/api/consumer.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/7fb156b0eb342a14f4ea7d6869e1f0fd/google/api/context.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/7fb156b0eb342a14f4ea7d6869e1f0fd/google/api/control.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/7fb156b0eb342a14f4ea7d6869e1f0fd/google/api/distribution.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/7fb156b0eb342a14f4ea7d6869e1f0fd/google/api/documentation.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/7fb156b0eb342a14f4ea7d6869e1f0fd/google/api/endpoint.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/7fb156b0eb342a14f4ea7d6869e1f0fd/google/api/error_reason.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/7fb156b0eb342a14f4ea7d6869e1f0fd/google/api/field_behavior.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/7fb156b0eb342a14f4ea7d6869e1f0fd/google/api/field_info.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/7fb156b0eb342a14f4ea7d6869e1f0fd/google/api/http.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/7fb156b0eb342a14f4ea7d6869e1f0fd/google/api/httpbody.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/7fb156b0eb342a14f4ea7d6869e1f0fd/google/api/label.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/7fb156b0eb342a14f4ea7d6869e1f0fd/google/api/launch_stage.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/7fb156b0eb342a14f4ea7d6869e1f0fd/google/api/log.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/7fb156b0eb342a14f4ea7d6869e1f0fd/google/api/logging.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/7fb156b0eb342a14f4ea7d6869e1f0fd/google/api/metric.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/7fb156b0eb342a14f4ea7d6869e1f0fd/google/api/monitored_resource.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/7fb156b0eb342a14f4ea7d6869e1f0fd/google/api/monitoring.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/7fb156b0eb342a14f4ea7d6869e1f0fd/google/api/policy.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/7fb156b0eb342a14f4ea7d6869e1f0fd/google/api/quota.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/7fb156b0eb342a14f4ea7d6869e1f0fd/google/api/resource.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/7fb156b0eb342a14f4ea7d6869e1f0fd/google/api/routing.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/7fb156b0eb342a14f4ea7d6869e1f0fd/google/api/service.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/7fb156b0eb342a14f4ea7d6869e1f0fd/google/api/source_info.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/7fb156b0eb342a14f4ea7d6869e1f0fd/google/api/system_parameter.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/7fb156b0eb342a14f4ea7d6869e1f0fd/google/api/usage.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/7fb156b0eb342a14f4ea7d6869e1f0fd/google/api/visibility.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/7fb156b0eb342a14f4ea7d6869e1f0fd/google/apps/card/v1/card.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/7fb156b0eb342a14f4ea7d6869e1f0fd/google/cloud/audit/audit_log.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/7fb156b0eb342a14f4ea7d6869e1f0fd/google/cloud/extended_operations.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/7fb156b0eb342a14f4ea7d6869e1f0fd/google/cloud/location/locations.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/7fb156b0eb342a14f4ea7d6869e1f0fd/google/geo/type/viewport.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/7fb156b0eb342a14f4ea7d6869e1f0fd/google/logging/type/http_request.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/7fb156b0eb342a14f4ea7d6869e1f0fd/google/logging/type/log_severity.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/7fb156b0eb342a14f4ea7d6869e1f0fd/google/longrunning/operations.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/7fb156b0eb342a14f4ea7d6869e1f0fd/google/rpc/code.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/7fb156b0eb342a14f4ea7d6869e1f0fd/google/rpc/context/attribute_context.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/7fb156b0eb342a14f4ea7d6869e1f0fd/google/rpc/context/audit_context.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/7fb156b0eb342a14f4ea7d6869e1f0fd/google/rpc/error_details.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/7fb156b0eb342a14f4ea7d6869e1f0fd/google/rpc/status.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/7fb156b0eb342a14f4ea7d6869e1f0fd/google/shopping/type/types.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/7fb156b0eb342a14f4ea7d6869e1f0fd/google/type/calendar_period.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/7fb156b0eb342a14f4ea7d6869e1f0fd/google/type/color.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/7fb156b0eb342a14f4ea7d6869e1f0fd/google/type/date.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/7fb156b0eb342a14f4ea7d6869e1f0fd/google/type/datetime.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/7fb156b0eb342a14f4ea7d6869e1f0fd/google/type/dayofweek.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/7fb156b0eb342a14f4ea7d6869e1f0fd/google/type/decimal.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/7fb156b0eb342a14f4ea7d6869e1f0fd/google/type/expr.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/7fb156b0eb342a14f4ea7d6869e1f0fd/google/type/fraction.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/7fb156b0eb342a14f4ea7d6869e1f0fd/google/type/interval.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/7fb156b0eb342a14f4ea7d6869e1f0fd/google/type/latlng.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/7fb156b0eb342a14f4ea7d6869e1f0fd/google/type/localized_text.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/7fb156b0eb342a14f4ea7d6869e1f0fd/google/type/money.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/7fb156b0eb342a14f4ea7d6869e1f0fd/google/type/month.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/7fb156b0eb342a14f4ea7d6869e1f0fd/google/type/phone_number.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/7fb156b0eb342a14f4ea7d6869e1f0fd/google/type/postal_address.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/7fb156b0eb342a14f4ea7d6869e1f0fd/google/type/quaternion.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-dependencies/7fb156b0eb342a14f4ea7d6869e1f0fd/google/type/timeofday.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-plugins/protoc-3.25.3-linux-x86_64.exe" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/protoc-plugins/protoc-gen-grpc-java-1.67.1-linux-x86_64.exe" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,21 +118,21 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "SemihOzen"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;SemihOzen&quot;
   }
-}]]></component>
+}</component>
   <component name="GithubPullRequestsUISettings"><![CDATA[{
   "selectedUrlAndAccountId": {
     "url": "https://github.com/salihefeserit/distributed-disk-register.git",
-    "accountId": "246224cb-de90-401e-879f-dd911f0a3007"
+    "accountId": "7297036b-17ab-476f-9042-820f885f0377"
   }
 }]]></component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 8
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 8
+}</component>
   <component name="ProjectId" id="37bk2gk4IZuKvowv1GeJ8UMlOF2" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -50,13 +141,26 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Application.NodeMain.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
     "git-widget-placeholder": "main",
+    "junie.onboarding.icon.badge.shown": "true",
     "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/Users/salihefeserit/distributed-disk-register",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
     "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.0"
+    "project.structure.side.proportion": "0.0",
+    "to.speed.mode.migration.done": "true",
+    "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="RunManager">
@@ -79,6 +183,14 @@
       </list>
     </recent_temporary>
   </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.27397.103" />
+        <option value="bundled-js-predefined-d6986cc7102b-3aa1da707db6-JavaScript-IU-252.27397.103" />
+      </set>
+    </attachedChunks>
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="1759e982-cebf-4ce9-9725-89295a431648" name="Changes" comment="" />
@@ -86,6 +198,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1767178952637</updated>
+      <workItem from="1767199773816" duration="2545000" />
     </task>
     <task id="LOCAL-00001" summary="TELNET SET cağrısı düzenlenip ana projeye eklendi.">
       <option name="closed" value="true" />
@@ -193,6 +306,9 @@
     </task>
     <option name="localTasksCounter" value="14" />
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="TELNET SET cağrısı düzenlenip ana projeye eklendi." />

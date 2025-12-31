@@ -1,6 +1,7 @@
 package com.example.family;
 
 import family.NodeInfo;
+import org.w3c.dom.Node;
 
 import java.util.Collection;
 import java.util.List;
@@ -25,5 +26,21 @@ public class NodeRegistry {
 
     public void remove(NodeInfo node) {
         nodes.remove(node);
+    }
+
+    public void increaseCount(NodeInfo tobeRemoved) {
+        String host = tobeRemoved.getHost();
+        int port = tobeRemoved.getPort();
+        int messageCount = tobeRemoved.getMessageCount();
+
+        nodes.remove(tobeRemoved);
+
+        NodeInfo newNodeInfo = NodeInfo.newBuilder()
+                .setHost(host)
+                .setPort(port)
+                .setMessageCount(messageCount + 1)
+                .build();
+
+        nodes.add(newNodeInfo);
     }
 }
