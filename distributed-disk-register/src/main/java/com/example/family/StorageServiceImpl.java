@@ -28,7 +28,7 @@ public class StorageServiceImpl extends StorageServiceGrpc.StorageServiceImplBas
         String id = String.valueOf(msg.getId());
         String text = msg.getText();
         try {
-            Path dosyaYolu = Path.of("messages/", id + ".msg"); //uuid mantığı eklenecek
+            Path dosyaYolu = Path.of("messages/" + RUN_ID, id + ".msg");
             Files.createDirectories(dosyaYolu.getParent());
             try (BufferedWriter bufferedWriter = Files.newBufferedWriter(
                     dosyaYolu,

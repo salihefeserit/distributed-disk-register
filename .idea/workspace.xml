@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1759e982-cebf-4ce9-9725-89295a431648" name="Changes" comment="StorageServiceImpl dosyası oluşturulup çocuklar arası haberleşmeye ön hazırlık yapıldı.">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/distributed-disk-register/src/main/java/com/example/family/NodeMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/distributed-disk-register/src/main/java/com/example/family/NodeMain.java" afterDir="false" />
+    <list default="true" id="1759e982-cebf-4ce9-9725-89295a431648" name="Changes" comment="StorageServiceImpl dosyası içerisindeki store fonksiyonu çocuklara gönderim için düzenlendi.">
       <change beforePath="$PROJECT_DIR$/distributed-disk-register/src/main/java/com/example/family/StorageServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/distributed-disk-register/src/main/java/com/example/family/StorageServiceImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -148,7 +146,15 @@
       <option name="project" value="LOCAL" />
       <updated>1767185133601</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="StorageServiceImpl dosyası içerisindeki store fonksiyonu çocuklara gönderim için düzenlendi.">
+      <option name="closed" value="true" />
+      <created>1767185711283</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1767185711283</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -160,6 +166,7 @@
     <MESSAGE value="retrieve fonksiyonu eklenip dosya içinden okuma işlemi yapıldı." />
     <MESSAGE value="gRPC Mesaj Modeli (Protobuf Nesnesi) aşaması için .proto dosyasında gerekli düzenlemeler yapıldı." />
     <MESSAGE value="StorageServiceImpl dosyası oluşturulup çocuklar arası haberleşmeye ön hazırlık yapıldı." />
-    <option name="LAST_COMMIT_MESSAGE" value="StorageServiceImpl dosyası oluşturulup çocuklar arası haberleşmeye ön hazırlık yapıldı." />
+    <MESSAGE value="StorageServiceImpl dosyası içerisindeki store fonksiyonu çocuklara gönderim için düzenlendi." />
+    <option name="LAST_COMMIT_MESSAGE" value="StorageServiceImpl dosyası içerisindeki store fonksiyonu çocuklara gönderim için düzenlendi." />
   </component>
 </project>
