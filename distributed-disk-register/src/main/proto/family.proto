@@ -31,3 +31,16 @@ service FamilyService {
 
   rpc ReceiveChat (ChatMessage) returns (Empty);
 }
+
+message StoreResult{
+    string result = 1;
+}
+
+message MessageId {
+    int32 id = 1;
+}
+
+service StorageService {
+    rpc Store (ChatMessage) returns (StoreResult);
+    rpc Retrieve (MessageId) returns (ChatMessage);
+}

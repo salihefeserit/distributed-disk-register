@@ -35,6 +35,16 @@ public final class FamilyProto {
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_family_ChatMessage_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_family_StoreResult_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_family_StoreResult_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_family_MessageId_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_family_MessageId_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -49,12 +59,16 @@ public final class FamilyProto {
       "members\030\001 \003(\0132\020.family.NodeInfo\"\007\n\005Empty" +
       "\"^\n\013ChatMessage\022\n\n\002id\030\001 \001(\005\022\014\n\004text\030\002 \001(" +
       "\t\022\020\n\010fromHost\030\003 \001(\t\022\020\n\010fromPort\030\004 \001(\005\022\021\n" +
-      "\ttimestamp\030\005 \001(\0032\240\001\n\rFamilyService\022,\n\004Jo" +
-      "in\022\020.family.NodeInfo\032\022.family.FamilyView" +
-      "\022.\n\tGetFamily\022\r.family.Empty\032\022.family.Fa" +
-      "milyView\0221\n\013ReceiveChat\022\023.family.ChatMes" +
-      "sage\032\r.family.EmptyB\027\n\006familyB\013FamilyPro" +
-      "toP\001b\006proto3"
+      "\ttimestamp\030\005 \001(\003\"\035\n\013StoreResult\022\016\n\006resul" +
+      "t\030\001 \001(\t\"\027\n\tMessageId\022\n\n\002id\030\001 \001(\0052\240\001\n\rFam" +
+      "ilyService\022,\n\004Join\022\020.family.NodeInfo\032\022.f" +
+      "amily.FamilyView\022.\n\tGetFamily\022\r.family.E" +
+      "mpty\032\022.family.FamilyView\0221\n\013ReceiveChat\022" +
+      "\023.family.ChatMessage\032\r.family.Empty2w\n\016S" +
+      "torageService\0221\n\005Store\022\023.family.ChatMess" +
+      "age\032\023.family.StoreResult\0222\n\010Retrieve\022\021.f" +
+      "amily.MessageId\032\023.family.ChatMessageB\027\n\006" +
+      "familyB\013FamilyProtoP\001b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -84,6 +98,18 @@ public final class FamilyProto {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_family_ChatMessage_descriptor,
         new java.lang.String[] { "Id", "Text", "FromHost", "FromPort", "Timestamp", });
+    internal_static_family_StoreResult_descriptor =
+      getDescriptor().getMessageTypes().get(4);
+    internal_static_family_StoreResult_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_family_StoreResult_descriptor,
+        new java.lang.String[] { "Result", });
+    internal_static_family_MessageId_descriptor =
+      getDescriptor().getMessageTypes().get(5);
+    internal_static_family_MessageId_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_family_MessageId_descriptor,
+        new java.lang.String[] { "Id", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)
