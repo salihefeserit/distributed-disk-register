@@ -4,10 +4,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1759e982-cebf-4ce9-9725-89295a431648" name="Changes" comment="Her üyedeki mesaj sayısını FamilyView'le yazdıracak şekilde ekledik. NodeInfo nesnesi bulundurduğu mesaj sayısını tutacak bir şekilde güncellendi.">
+    <list default="true" id="1759e982-cebf-4ce9-9725-89295a431648" name="Changes" comment="Mesaj gönderimi, okunan tolerans sayısı baz alınarak, yük dengesini sağlamak amacıyla en az mesaj sahip sahip üyeler arasında paylaştırılması.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/messages/0c09815f-6890-4e81-924b-f38f502bb3d2/2324.msg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/messages/0c09815f-6890-4e81-924b-f38f502bb3d2/234.msg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/messages/1086a29d-be70-4cb1-94ea-bef7e3beae2a/123.msg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/messages/1086a29d-be70-4cb1-94ea-bef7e3beae2a/343.msg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/messages/172f30db-2f5d-4be1-a600-af55f86ebcf1/4.msg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/messages/172f30db-2f5d-4be1-a600-af55f86ebcf1/5.msg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/messages/1b3cd04d-eabd-4056-822b-3687092e7cca/4.msg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/messages/1b3cd04d-eabd-4056-822b-3687092e7cca/5.msg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/messages/63b55fe5-5cf1-4e40-b009-6cc394d76914/123.msg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/messages/63b55fe5-5cf1-4e40-b009-6cc394d76914/2324.msg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/messages/900a72a4-616c-4e28-8776-a9aad726eae1/2324.msg" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/distributed-disk-register/src/main/java/com/example/family/NodeMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/distributed-disk-register/src/main/java/com/example/family/NodeMain.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/distributed-disk-register/src/main/java/com/example/family/NodeRegistry.java" beforeDir="false" afterPath="$PROJECT_DIR$/distributed-disk-register/src/main/java/com/example/family/NodeRegistry.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/maven-archiver/pom.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/distributed-disk-register/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -109,7 +121,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1767178952637</updated>
-      <workItem from="1767199773816" duration="4512000" />
+      <workItem from="1767199773816" duration="12928000" />
     </task>
     <task id="LOCAL-00001" summary="TELNET SET cağrısı düzenlenip ana projeye eklendi.">
       <option name="closed" value="true" />
@@ -231,7 +243,15 @@
       <option name="project" value="LOCAL" />
       <updated>1767202577976</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Mesaj gönderimi, okunan tolerans sayısı baz alınarak, yük dengesini sağlamak amacıyla en az mesaj sahip sahip üyeler arasında paylaştırılması.">
+      <option name="closed" value="true" />
+      <created>1767204366249</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1767204366249</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -252,6 +272,7 @@
     <MESSAGE value="StorageServiceImpl dosyası içerisindeki retrive fonksiyonu düzenlendi." />
     <MESSAGE value="NodeMain dosyası içerisindeki takeFromNodeList fonksiyonu eklendi bu fonksiyon sayesinde retrive fonksiyonunu kullandık." />
     <MESSAGE value="Her üyedeki mesaj sayısını FamilyView'le yazdıracak şekilde ekledik. NodeInfo nesnesi bulundurduğu mesaj sayısını tutacak bir şekilde güncellendi." />
-    <option name="LAST_COMMIT_MESSAGE" value="Her üyedeki mesaj sayısını FamilyView'le yazdıracak şekilde ekledik. NodeInfo nesnesi bulundurduğu mesaj sayısını tutacak bir şekilde güncellendi." />
+    <MESSAGE value="Mesaj gönderimi, okunan tolerans sayısı baz alınarak, yük dengesini sağlamak amacıyla en az mesaj sahip sahip üyeler arasında paylaştırılması." />
+    <option name="LAST_COMMIT_MESSAGE" value="Mesaj gönderimi, okunan tolerans sayısı baz alınarak, yük dengesini sağlamak amacıyla en az mesaj sahip sahip üyeler arasında paylaştırılması." />
   </component>
 </project>

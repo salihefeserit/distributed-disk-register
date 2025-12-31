@@ -7,11 +7,7 @@ import io.grpc.*;
 import java.io.*;
 import java.net.Socket;
 
-
 import java.net.ServerSocket;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.*;
@@ -22,7 +18,8 @@ public class NodeMain {
     private static final int PRINT_INTERVAL_SECONDS = 10;
 
     //private static Map<Integer, String> database = new ConcurrentHashMap<>();    //aşama 1-2 haritalama
-    private static final Set<Map<Integer, List<NodeInfo>>> nodes = ConcurrentHashMap.newKeySet();
+    private static final Map<Integer, List<NodeInfo>> nodes = new ConcurrentHashMap<>();;
+
     public static void main(String[] args) throws Exception {
         String host = "127.0.0.1";
         int port = findFreePort(START_PORT);
@@ -114,11 +111,6 @@ private static void handleClientTextConnection(Socket client,
                         .setTimestamp(ts)
                         .build();
 
-                List<NodeInfo> holders = registry.snapshot();
-                Map<Integer, List<NodeInfo>> harita = new HashMap<>();
-                harita.put(id, holders);
-                nodes.add(harita);
-
                 System.out.println("📝 Received from TCP: " + mesaj);
 
                 broadcastToFamily(registry, self, msg, outtelnet); //sonrasında güncellenecek
@@ -156,6 +148,8 @@ private static void handleClientTextConnection(Socket client,
     int targetCount = Math.min(tolerance, members.size());
     List<NodeInfo> targets = members.subList(0, targetCount);
 
+    nodes.put(msg.getId(), new CopyOnWriteArrayList<>(targets));
+
     for (NodeInfo n : targets) {
         // Kendimize tekrar gönderme
         // if (n.getHost().equals(self.getHost()) && n.getPort() == self.getPort()) {
@@ -175,11 +169,12 @@ private static void handleClientTextConnection(Socket client,
             StorageServiceGrpc.StorageServiceBlockingStub stub_storage =
                     StorageServiceGrpc.newBlockingStub(channel);
 
+            registry.increaseCount(n);
+
             stub.receiveChat(msg);
             result = stub_storage.store(msg).getResult();
 
             System.out.printf("Broadcasted message to %s:%d%n", n.getHost(), n.getPort());
-            registry.increaseCount(n);
 
         } catch (Exception e) {
             System.err.printf("Failed to send to %s:%d (%s)%n",
@@ -265,21 +260,45 @@ private static void handleClientTextConnection(Socket client,
         ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 
         scheduler.scheduleAtFixedRate(() -> {
-            List<NodeInfo> members = registry.snapshot();
-            System.out.println("======================================");
-            System.out.printf("Family at %s:%d (me)%n", self.getHost(), self.getPort());
-            System.out.println("Time: " + LocalDateTime.now());
-            System.out.println("Members:");
+            ManagedChannel channel = null;
+            try {
+                channel = ManagedChannelBuilder
+                        .forAddress("127.0.0.1", START_PORT)
+                        .usePlaintext()
+                        .build();
+                try {
+                    FamilyServiceGrpc.FamilyServiceBlockingStub stub =
+                            FamilyServiceGrpc.newBlockingStub(channel);
+                    List<NodeInfo> members = stub.getFamily(Empty.newBuilder().build()).getMembersList();
 
-            for (NodeInfo n : members) {
-                boolean isMe = n.getHost().equals(self.getHost()) && n.getPort() == self.getPort();
-                System.out.printf(" - %s:%d - %d %s%n",
-                        n.getHost(),
-                        n.getPort(),
-                        n.getMessageCount(),
-                        isMe ? " (me)" : "");
+                    // List<NodeInfo> members = registry.snapshot();
+                    System.out.println("======================================");
+                    System.out.printf("Family at %s:%d (me)%n", self.getHost(), self.getPort());
+                    System.out.println("Time: " + LocalDateTime.now());
+                    System.out.println("Members:");
+
+                    for (NodeInfo n : members) {
+                        boolean isMe = n.getHost().equals(self.getHost()) && n.getPort() == self.getPort();
+                        System.out.printf(" - %s:%d - %d %s%n",
+                                n.getHost(),
+                                n.getPort(),
+                                n.getMessageCount(),
+                                isMe ? " (me)" : "");
+                    }
+                    System.out.println("======================================");
+                }
+                catch (StatusRuntimeException e) {
+                    System.out.println("Lider düştü! Kapatılıyor...");
+                    System.exit(0);
+                }
             }
-            System.out.println("======================================");
+            catch (Exception e) {
+                System.err.println("Beklenmedik bir hata oluştu: " + e.getMessage());
+                e.printStackTrace();
+            }
+            finally {
+                if (channel != null) channel.shutdownNow();
+            }
         }, 3, PRINT_INTERVAL_SECONDS, TimeUnit.SECONDS);
     }
 
