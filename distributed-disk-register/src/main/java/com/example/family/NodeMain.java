@@ -1,16 +1,8 @@
 package com.example.family;
 
-import family.Empty;
-import family.FamilyServiceGrpc;
-import family.FamilyView;
-import family.NodeInfo;
-import family.ChatMessage;
+import family.*;
 
-
-import io.grpc.ManagedChannel;
-import io.grpc.ManagedChannelBuilder;
-import io.grpc.Server;
-import io.grpc.ServerBuilder;
+import io.grpc.*;
 
 import java.io.*;
 import java.net.Socket;
@@ -43,10 +35,12 @@ public class NodeMain {
 
         NodeRegistry registry = new NodeRegistry();
         FamilyServiceImpl service = new FamilyServiceImpl(registry, self);
+        StorageServiceImpl service_storage = new StorageServiceImpl();
 
         Server server = ServerBuilder
                 .forPort(port)
                 .addService(service)
+                .addService(service_storage)
                 .build()
                 .start();
 
@@ -62,9 +56,6 @@ public class NodeMain {
                 startHealthChecker(registry, self);
 
                 server.awaitTermination();
-
-
-
 
     }
 
@@ -123,7 +114,7 @@ private static void handleClientTextConnection(Socket client,
                         .build();
 
                 database.put(id, mesaj);
-                store(msg, outtelnet);
+                //store(msg, outtelnet);
 
                 System.out.println("📝 Received from TCP: " + mesaj);
                 broadcastToFamily(registry, self, msg); //sonrasında güncellenecek
@@ -136,7 +127,7 @@ private static void handleClientTextConnection(Socket client,
                 int id = Integer.parseInt(parts[1]);
                 //String mesaj = database.get(id);
 
-                retrieve(id, outtelnet);
+                //retrieve(id, outtelnet);
 
             }
 
@@ -149,33 +140,7 @@ private static void handleClientTextConnection(Socket client,
     }
 }
 
-    private static void store(ChatMessage msg, PrintWriter outtelnet) {
-        String id = String.valueOf(msg.getId());
-        String text = msg.getText();
-        try {
-            Path dosyaYolu = Path.of("messages/", id + ".msg"); //uuid mantığı eklenecek
-            Files.createDirectories(dosyaYolu.getParent());
-            try (BufferedWriter bufferedWriter = Files.newBufferedWriter(
-                    dosyaYolu,
-                    StandardOpenOption.CREATE)) {
-                bufferedWriter.write(text);
-                outtelnet.println("OK");
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-    private static void retrieve(Integer id, PrintWriter out) {
-        try (BufferedReader reader = new BufferedReader(new FileReader("messages/" + id + ".msg"))) {
-            String line = reader.readLine();
 
-            out.println(line);
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-            out.println("NOT_FOUND");
-        }
-
-    }
     private static void broadcastToFamily(NodeRegistry registry,
                                       NodeInfo self,
                                       ChatMessage msg) {
@@ -197,6 +162,9 @@ private static void handleClientTextConnection(Socket client,
 
             FamilyServiceGrpc.FamilyServiceBlockingStub stub =
                     FamilyServiceGrpc.newBlockingStub(channel);
+
+            StorageServiceGrpc.StorageServiceBlockingStub stub_storage =
+                    StorageServiceGrpc.newBlockingStub(channel);
 
             stub.receiveChat(msg);
 
