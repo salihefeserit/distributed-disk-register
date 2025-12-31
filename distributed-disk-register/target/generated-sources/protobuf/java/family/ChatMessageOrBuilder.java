@@ -9,37 +9,43 @@ public interface ChatMessageOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>string text = 1;</code>
+   * <code>int32 id = 1;</code>
+   * @return The id.
+   */
+  int getId();
+
+  /**
+   * <code>string text = 2;</code>
    * @return The text.
    */
   java.lang.String getText();
   /**
-   * <code>string text = 1;</code>
+   * <code>string text = 2;</code>
    * @return The bytes for text.
    */
   com.google.protobuf.ByteString
       getTextBytes();
 
   /**
-   * <code>string fromHost = 2;</code>
+   * <code>string fromHost = 3;</code>
    * @return The fromHost.
    */
   java.lang.String getFromHost();
   /**
-   * <code>string fromHost = 2;</code>
+   * <code>string fromHost = 3;</code>
    * @return The bytes for fromHost.
    */
   com.google.protobuf.ByteString
       getFromHostBytes();
 
   /**
-   * <code>int32 fromPort = 3;</code>
+   * <code>int32 fromPort = 4;</code>
    * @return The fromPort.
    */
   int getFromPort();
 
   /**
-   * <code>int64 timestamp = 4;</code>
+   * <code>int64 timestamp = 5;</code>
    * @return The timestamp.
    */
   long getTimestamp();

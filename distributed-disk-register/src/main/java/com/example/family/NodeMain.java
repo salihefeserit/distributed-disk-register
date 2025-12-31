@@ -1,24 +1,19 @@
 package com.example.family;
 
-import family.Empty;
-import family.FamilyServiceGrpc;
-import family.FamilyView;
-import family.NodeInfo;
-import family.ChatMessage;
+import family.*;
 
-import io.grpc.ManagedChannel;
-import io.grpc.ManagedChannelBuilder;
-import io.grpc.Server;
-import io.grpc.ServerBuilder;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import io.grpc.*;
+
+import java.io.*;
 import java.net.Socket;
 
 
-import java.io.IOException;
 import java.net.ServerSocket;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.*;
 
 public class NodeMain {
@@ -26,6 +21,8 @@ public class NodeMain {
     private static final int START_PORT = 5555;
     private static final int PRINT_INTERVAL_SECONDS = 10;
 
+    //private static Map<Integer, String> database = new ConcurrentHashMap<>();    //aşama 1-2 haritalama
+    private static final Set<Map<Integer, List<NodeInfo>>> nodes = ConcurrentHashMap.newKeySet();
     public static void main(String[] args) throws Exception {
         String host = "127.0.0.1";
         int port = findFreePort(START_PORT);
@@ -37,10 +34,12 @@ public class NodeMain {
 
         NodeRegistry registry = new NodeRegistry();
         FamilyServiceImpl service = new FamilyServiceImpl(registry, self);
+        StorageServiceImpl service_storage = new StorageServiceImpl();
 
         Server server = ServerBuilder
                 .forPort(port)
                 .addService(service)
+                .addService(service_storage)
                 .build()
                 .start();
 
@@ -49,6 +48,7 @@ public class NodeMain {
                 // Eğer bu ilk node ise (port 5555), TCP 6666'da text dinlesin
                 if (port == START_PORT) {
                     startLeaderTextListener(registry, self);
+
                 }
 
                 discoverExistingNodes(host, port, registry, self);
@@ -56,9 +56,6 @@ public class NodeMain {
                 startHealthChecker(registry, self);
 
                 server.awaitTermination();
-
-
-
 
     }
 
@@ -94,18 +91,49 @@ private static void handleClientTextConnection(Socket client,
 
             long ts = System.currentTimeMillis();
 
-            // Kendi üstüne de yaz
-            System.out.println("📝 Received from TCP: " + text);
+            PrintWriter outtelnet = new PrintWriter(client.getOutputStream(), true);
 
-            ChatMessage msg = ChatMessage.newBuilder()
-                    .setText(text)
-                    .setFromHost(self.getHost())
-                    .setFromPort(self.getPort())
-                    .setTimestamp(ts)
-                    .build();
+            String[] parts = text.split(" ");
+            String command = parts[0].toUpperCase();
 
-            // Tüm family üyelerine broadcast et
-            broadcastToFamily(registry, self, msg);
+            if (command.equals("SET")) {
+                if (parts.length < 3) {
+                    outtelnet.println("SET ID <MESAJ>");
+                    continue;
+                }
+
+                int id = Integer.parseInt(parts[1]);
+                String mesaj = parts[2];
+
+                ChatMessage msg = ChatMessage.newBuilder()
+                        .setId(id)
+                        .setText(mesaj)
+                        .setFromHost(self.getHost())
+                        .setFromPort(self.getPort())
+                        .setTimestamp(ts)
+                        .build();
+
+                List<NodeInfo> holders = registry.snapshot();
+                Map<Integer, List<NodeInfo>> harita = new HashMap<>();
+                harita.put(id, holders);
+                nodes.add(harita);
+
+                System.out.println("📝 Received from TCP: " + mesaj);
+
+                broadcastToFamily(registry, self, msg, outtelnet); //sonrasında güncellenecek
+
+            }else if (command.equals("GET")) {
+                if (parts.length < 2) {
+                    outtelnet.println("HATA: Eksik parametre (GET ID)");
+                    continue;
+                }
+                MessageId id = MessageId.newBuilder()
+                        .setId(Integer.parseInt(parts[1]))
+                        .build();
+
+                outtelnet.println(takeFromNodeList(registry, self, id));
+            }
+
         }
 
     } catch (IOException e) {
@@ -115,11 +143,13 @@ private static void handleClientTextConnection(Socket client,
     }
 }
 
-private static void broadcastToFamily(NodeRegistry registry,
+
+    private static void broadcastToFamily(NodeRegistry registry,
                                       NodeInfo self,
-                                      ChatMessage msg) {
+                                      ChatMessage msg, PrintWriter outtelnet) {
 
     List<NodeInfo> members = registry.snapshot();
+    String result = "";
 
     for (NodeInfo n : members) {
         // Kendimize tekrar gönderme
@@ -137,7 +167,11 @@ private static void broadcastToFamily(NodeRegistry registry,
             FamilyServiceGrpc.FamilyServiceBlockingStub stub =
                     FamilyServiceGrpc.newBlockingStub(channel);
 
+            StorageServiceGrpc.StorageServiceBlockingStub stub_storage =
+                    StorageServiceGrpc.newBlockingStub(channel);
+
             stub.receiveChat(msg);
+            result = stub_storage.store(msg).getResult();
 
             System.out.printf("Broadcasted message to %s:%d%n", n.getHost(), n.getPort());
 
@@ -148,8 +182,38 @@ private static void broadcastToFamily(NodeRegistry registry,
             if (channel != null) channel.shutdownNow();
         }//..
     }
+    outtelnet.println(result);
 }
 
+    //üyelerden mesajı çekmek için kullanılan fonk
+    private static String takeFromNodeList(NodeRegistry registry, NodeInfo self, MessageId id) {
+        List<NodeInfo> members = registry.snapshot();
+
+        for (NodeInfo n : members) {
+            // Kendimize tekrar gönderme
+            if (n.getHost().equals(self.getHost()) && n.getPort() == self.getPort()) {
+                continue;
+            }
+
+            ManagedChannel channel = null;
+            try {
+                channel = ManagedChannelBuilder
+                        .forAddress(n.getHost(), n.getPort())
+                        .usePlaintext()
+                        .build();
+
+                StorageServiceGrpc.StorageServiceBlockingStub stub2 =
+                        StorageServiceGrpc.newBlockingStub(channel);
+
+                return stub2.retrieve(id).getText();
+
+            } catch (Exception ignored) {
+            } finally {
+                if (channel != null) channel.shutdownNow();
+            }
+        }
+        return "NOT_FOUND";
+    }
 
     private static int findFreePort(int startPort) {
         int port = startPort;

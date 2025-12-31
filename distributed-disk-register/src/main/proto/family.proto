@@ -18,10 +18,11 @@ message FamilyView {
 message Empty {}
 
 message ChatMessage {
-  string text = 1;
-  string fromHost = 2;
-  int32 fromPort = 3;
-  int64 timestamp = 4;
+  int32 id = 1;
+  string text = 2;
+  string fromHost = 3;
+  int32 fromPort = 4;
+  int64 timestamp = 5;
 }
 
 service FamilyService {
@@ -29,4 +30,17 @@ service FamilyService {
   rpc GetFamily (Empty) returns (FamilyView);
 
   rpc ReceiveChat (ChatMessage) returns (Empty);
+}
+
+message StoreResult{
+    string result = 1;
+}
+
+message MessageId {
+    int32 id = 1;
+}
+
+service StorageService {
+    rpc Store (ChatMessage) returns (StoreResult);
+    rpc Retrieve (MessageId) returns (ChatMessage);
 }

@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="1759e982-cebf-4ce9-9725-89295a431648" name="Changes" comment="NodeMain dosyası içerisindeki takeFromNodeList fonksiyonu eklendi bu fonksiyon sayesinde retrive fonksiyonunu kullandık.">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/messages/18b1d36a-011d-4ac7-a5fb-a541eb946328/10.msg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/messages/3f8d9347-840a-47c4-a80d-63afd4853331/10.msg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/messages/bd19182e-35dd-420d-9c13-fb3f57562dd7/10.msg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/messages/d95fda07-3fb4-40c3-a8b4-b9816d7a4f5f/10.msg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/src/main/java/com/example/family/NodeMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/distributed-disk-register/src/main/java/com/example/family/NodeMain.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "SemihOzen"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/salihefeserit/distributed-disk-register.git",
+    "accountId": "246224cb-de90-401e-879f-dd911f0a3007"
+  }
+}]]></component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 8
+}]]></component>
+  <component name="ProjectId" id="37bk2gk4IZuKvowv1GeJ8UMlOF2" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.NodeMain.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.0"
+  }
+}]]></component>
+  <component name="RunManager">
+    <configuration name="NodeMain" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.example.family.NodeMain" />
+      <module name="family-grpc" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.example.family.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.NodeMain" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="1759e982-cebf-4ce9-9725-89295a431648" name="Changes" comment="" />
+      <created>1767178952637</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1767178952637</updated>
+    </task>
+    <task id="LOCAL-00001" summary="TELNET SET cağrısı düzenlenip ana projeye eklendi.">
+      <option name="closed" value="true" />
+      <created>1767179870605</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1767179870605</updated>
+    </task>
+    <task id="LOCAL-00002" summary="TELNET SET - GET cağrısı düzenlenip ana projeye eklendi.">
+      <option name="closed" value="true" />
+      <created>1767180404636</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1767180404636</updated>
+    </task>
+    <task id="LOCAL-00003" summary="TELNET SET - GET cağrısı hataları düzenlendi.">
+      <option name="closed" value="true" />
+      <created>1767180737936</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1767180737936</updated>
+    </task>
+    <task id="LOCAL-00004" summary="NodeStorage oluşturuldu, store class ı kodlanıp proto güncellenip derlendi düzenlendi.">
+      <option name="closed" value="true" />
+      <created>1767181709389</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1767181709389</updated>
+    </task>
+    <task id="LOCAL-00005" summary="store fonksiyonu eklenip dosya kaydedilme işlemi yapıldı düzenlendi.">
+      <option name="closed" value="true" />
+      <created>1767182650168</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1767182650168</updated>
+    </task>
+    <task id="LOCAL-00006" summary="retrieve fonksiyonu eklenip dosya içinden okuma işlemi yapıldı.">
+      <option name="closed" value="true" />
+      <created>1767183266223</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1767183266223</updated>
+    </task>
+    <task id="LOCAL-00007" summary="gRPC Mesaj Modeli (Protobuf Nesnesi) aşaması için .proto dosyasında gerekli düzenlemeler yapıldı.">
+      <option name="closed" value="true" />
+      <created>1767184367998</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1767184367998</updated>
+    </task>
+    <task id="LOCAL-00008" summary="StorageServiceImpl dosyası oluşturulup çocuklar arası haberleşmeye ön hazırlık yapıldı.">
+      <option name="closed" value="true" />
+      <created>1767185133601</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1767185133601</updated>
+    </task>
+    <task id="LOCAL-00009" summary="StorageServiceImpl dosyası içerisindeki store fonksiyonu çocuklara gönderim için düzenlendi.">
+      <option name="closed" value="true" />
+      <created>1767185711283</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1767185711283</updated>
+    </task>
+    <task id="LOCAL-00010" summary="StorageServiceImpl dosyası içerisindeki store fonksiyonuna uuid mantığı eklendi.">
+      <option name="closed" value="true" />
+      <created>1767185733297</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1767185733297</updated>
+    </task>
+    <task id="LOCAL-00011" summary="StorageServiceImpl dosyası içerisindeki store fonksiyonuna hata fırlatma kısmı düzenlendi.">
+      <option name="closed" value="true" />
+      <created>1767185769439</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1767185769439</updated>
+    </task>
+    <task id="LOCAL-00012" summary="StorageServiceImpl dosyası içerisindeki retrive fonksiyonu düzenlendi.">
+      <option name="closed" value="true" />
+      <created>1767187353892</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1767187353892</updated>
+    </task>
+    <task id="LOCAL-00013" summary="NodeMain dosyası içerisindeki takeFromNodeList fonksiyonu eklendi bu fonksiyon sayesinde retrive fonksiyonunu kullandık.">
+      <option name="closed" value="true" />
+      <created>1767187707496</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1767187707496</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
+    <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="TELNET SET cağrısı düzenlenip ana projeye eklendi." />
+    <MESSAGE value="TELNET SET - GET cağrısı düzenlenip ana projeye eklendi." />
+    <MESSAGE value="TELNET SET - GET cağrısı hataları düzenlendi." />
+    <MESSAGE value="NodeStorage oluşturuldu, store class ı kodlanıp proto güncellenip derlendi düzenlendi." />
+    <MESSAGE value="store fonksiyonu eklenip dosya kaydedilme işlemi yapıldı düzenlendi." />
+    <MESSAGE value="retrieve fonksiyonu eklenip dosya içinden okuma işlemi yapıldı." />
+    <MESSAGE value="gRPC Mesaj Modeli (Protobuf Nesnesi) aşaması için .proto dosyasında gerekli düzenlemeler yapıldı." />
+    <MESSAGE value="StorageServiceImpl dosyası oluşturulup çocuklar arası haberleşmeye ön hazırlık yapıldı." />
+    <MESSAGE value="StorageServiceImpl dosyası içerisindeki store fonksiyonu çocuklara gönderim için düzenlendi." />
+    <MESSAGE value="StorageServiceImpl dosyası içerisindeki store fonksiyonuna uuid mantığı eklendi." />
+    <MESSAGE value="StorageServiceImpl dosyası içerisindeki store fonksiyonuna hata fırlatma kısmı düzenlendi." />
+    <MESSAGE value="StorageServiceImpl dosyası içerisindeki retrive fonksiyonu düzenlendi." />
+    <MESSAGE value="NodeMain dosyası içerisindeki takeFromNodeList fonksiyonu eklendi bu fonksiyon sayesinde retrive fonksiyonunu kullandık." />
+    <option name="LAST_COMMIT_MESSAGE" value="NodeMain dosyası içerisindeki takeFromNodeList fonksiyonu eklendi bu fonksiyon sayesinde retrive fonksiyonunu kullandık." />
+  </component>
+</project>
