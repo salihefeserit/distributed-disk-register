@@ -25,4 +25,10 @@ public interface NodeInfoOrBuilder extends
    * @return The port.
    */
   int getPort();
+
+  /**
+   * <code>int32 messageCount = 3;</code>
+   * @return The messageCount.
+   */
+  int getMessageCount();
 }

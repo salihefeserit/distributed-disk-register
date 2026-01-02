@@ -54,21 +54,22 @@ public final class FamilyProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\014family.proto\022\006family\"&\n\010NodeInfo\022\014\n\004ho" +
-      "st\030\001 \001(\t\022\014\n\004port\030\002 \001(\005\"/\n\nFamilyView\022!\n\007" +
-      "members\030\001 \003(\0132\020.family.NodeInfo\"\007\n\005Empty" +
-      "\"^\n\013ChatMessage\022\n\n\002id\030\001 \001(\005\022\014\n\004text\030\002 \001(" +
-      "\t\022\020\n\010fromHost\030\003 \001(\t\022\020\n\010fromPort\030\004 \001(\005\022\021\n" +
-      "\ttimestamp\030\005 \001(\003\"\035\n\013StoreResult\022\016\n\006resul" +
-      "t\030\001 \001(\t\"\027\n\tMessageId\022\n\n\002id\030\001 \001(\0052\240\001\n\rFam" +
-      "ilyService\022,\n\004Join\022\020.family.NodeInfo\032\022.f" +
-      "amily.FamilyView\022.\n\tGetFamily\022\r.family.E" +
-      "mpty\032\022.family.FamilyView\0221\n\013ReceiveChat\022" +
-      "\023.family.ChatMessage\032\r.family.Empty2w\n\016S" +
-      "torageService\0221\n\005Store\022\023.family.ChatMess" +
-      "age\032\023.family.StoreResult\0222\n\010Retrieve\022\021.f" +
-      "amily.MessageId\032\023.family.ChatMessageB\027\n\006" +
-      "familyB\013FamilyProtoP\001b\006proto3"
+      "\n\014family.proto\022\006family\"<\n\010NodeInfo\022\014\n\004ho" +
+      "st\030\001 \001(\t\022\014\n\004port\030\002 \001(\005\022\024\n\014messageCount\030\003" +
+      " \001(\005\"/\n\nFamilyView\022!\n\007members\030\001 \003(\0132\020.fa" +
+      "mily.NodeInfo\"\007\n\005Empty\"^\n\013ChatMessage\022\n\n" +
+      "\002id\030\001 \001(\005\022\014\n\004text\030\002 \001(\t\022\020\n\010fromHost\030\003 \001(" +
+      "\t\022\020\n\010fromPort\030\004 \001(\005\022\021\n\ttimestamp\030\005 \001(\003\"\035" +
+      "\n\013StoreResult\022\016\n\006result\030\001 \001(\t\"\027\n\tMessage" +
+      "Id\022\n\n\002id\030\001 \001(\0052\240\001\n\rFamilyService\022,\n\004Join" +
+      "\022\020.family.NodeInfo\032\022.family.FamilyView\022." +
+      "\n\tGetFamily\022\r.family.Empty\032\022.family.Fami" +
+      "lyView\0221\n\013ReceiveChat\022\023.family.ChatMessa" +
+      "ge\032\r.family.Empty2w\n\016StorageService\0221\n\005S" +
+      "tore\022\023.family.ChatMessage\032\023.family.Store" +
+      "Result\0222\n\010Retrieve\022\021.family.MessageId\032\023." +
+      "family.ChatMessageB\027\n\006familyB\013FamilyProt" +
+      "oP\001b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -79,7 +80,7 @@ public final class FamilyProto {
     internal_static_family_NodeInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_family_NodeInfo_descriptor,
-        new java.lang.String[] { "Host", "Port", });
+        new java.lang.String[] { "Host", "Port", "MessageCount", });
     internal_static_family_FamilyView_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_family_FamilyView_fieldAccessorTable = new

@@ -4,12 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1759e982-cebf-4ce9-9725-89295a431648" name="Changes" comment="NodeMain dosyası içerisindeki takeFromNodeList fonksiyonu eklendi bu fonksiyon sayesinde retrive fonksiyonunu kullandık.">
+    <list default="true" id="1759e982-cebf-4ce9-9725-89295a431648" name="Changes" comment="Mesaj sayılarının ve FamilyView'in tüm aileye dağıtılmasının sağlanılması.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/distributed-disk-register/messages/18b1d36a-011d-4ac7-a5fb-a541eb946328/10.msg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/distributed-disk-register/messages/3f8d9347-840a-47c4-a80d-63afd4853331/10.msg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/distributed-disk-register/messages/bd19182e-35dd-420d-9c13-fb3f57562dd7/10.msg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/distributed-disk-register/messages/d95fda07-3fb4-40c3-a8b4-b9816d7a4f5f/10.msg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TOLERANCE.conf" beforeDir="false" afterPath="$PROJECT_DIR$/distributed-disk-register/TOLERANCE.conf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributed-disk-register/src/main/java/com/example/family/FamilyServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/distributed-disk-register/src/main/java/com/example/family/FamilyServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/distributed-disk-register/src/main/java/com/example/family/NodeMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/distributed-disk-register/src/main/java/com/example/family/NodeMain.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -27,21 +25,21 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "SemihOzen"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;SemihOzen&quot;
   }
-}]]></component>
+}</component>
   <component name="GithubPullRequestsUISettings"><![CDATA[{
   "selectedUrlAndAccountId": {
     "url": "https://github.com/salihefeserit/distributed-disk-register.git",
-    "accountId": "246224cb-de90-401e-879f-dd911f0a3007"
+    "accountId": "7297036b-17ab-476f-9042-820f885f0377"
   }
 }]]></component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 8
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 8
+}</component>
   <component name="ProjectId" id="37bk2gk4IZuKvowv1GeJ8UMlOF2" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -50,15 +48,34 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Application.NodeMain.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
     "git-widget-placeholder": "main",
+    "junie.onboarding.icon.badge.shown": "true",
     "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/Users/salihefeserit/distributed-disk-register",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
     "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.0"
+    "project.structure.side.proportion": "0.0",
+    "to.speed.mode.migration.done": "true",
+    "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/distributed-disk-register" />
+      <recent name="$PROJECT_DIR$" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="NodeMain" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.example.family.NodeMain" />
@@ -79,6 +96,14 @@
       </list>
     </recent_temporary>
   </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.27397.103" />
+        <option value="bundled-js-predefined-d6986cc7102b-3aa1da707db6-JavaScript-IU-252.27397.103" />
+      </set>
+    </attachedChunks>
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="1759e982-cebf-4ce9-9725-89295a431648" name="Changes" comment="" />
@@ -86,6 +111,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1767178952637</updated>
+      <workItem from="1767199773816" duration="19062000" />
     </task>
     <task id="LOCAL-00001" summary="TELNET SET cağrısı düzenlenip ana projeye eklendi.">
       <option name="closed" value="true" />
@@ -191,8 +217,43 @@
       <option name="project" value="LOCAL" />
       <updated>1767187707496</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Her üyedeki mesaj sayısını FamilyView'le yazdıracak şekilde ekledik. NodeInfo nesnesi bulundurduğu mesaj sayısını tutacak bir şekilde güncellendi.">
+      <option name="closed" value="true" />
+      <created>1767202562044</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1767202562044</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Her üyedeki mesaj sayısını FamilyView'le yazdıracak şekilde ekledik. NodeInfo nesnesi bulundurduğu mesaj sayısını tutacak bir şekilde güncellendi.">
+      <option name="closed" value="true" />
+      <created>1767202577976</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1767202577976</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Mesaj gönderimi, okunan tolerans sayısı baz alınarak, yük dengesini sağlamak amacıyla en az mesaj sahip sahip üyeler arasında paylaştırılması.">
+      <option name="closed" value="true" />
+      <created>1767204366249</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1767204366249</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Mesaj sayılarının ve FamilyView'in tüm aileye dağıtılmasının sağlanılması.">
+      <option name="closed" value="true" />
+      <created>1767218583227</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1767218583227</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="TELNET SET cağrısı düzenlenip ana projeye eklendi." />
@@ -208,6 +269,9 @@
     <MESSAGE value="StorageServiceImpl dosyası içerisindeki store fonksiyonuna hata fırlatma kısmı düzenlendi." />
     <MESSAGE value="StorageServiceImpl dosyası içerisindeki retrive fonksiyonu düzenlendi." />
     <MESSAGE value="NodeMain dosyası içerisindeki takeFromNodeList fonksiyonu eklendi bu fonksiyon sayesinde retrive fonksiyonunu kullandık." />
-    <option name="LAST_COMMIT_MESSAGE" value="NodeMain dosyası içerisindeki takeFromNodeList fonksiyonu eklendi bu fonksiyon sayesinde retrive fonksiyonunu kullandık." />
+    <MESSAGE value="Her üyedeki mesaj sayısını FamilyView'le yazdıracak şekilde ekledik. NodeInfo nesnesi bulundurduğu mesaj sayısını tutacak bir şekilde güncellendi." />
+    <MESSAGE value="Mesaj gönderimi, okunan tolerans sayısı baz alınarak, yük dengesini sağlamak amacıyla en az mesaj sahip sahip üyeler arasında paylaştırılması." />
+    <MESSAGE value="Mesaj sayılarının ve FamilyView'in tüm aileye dağıtılmasının sağlanılması." />
+    <option name="LAST_COMMIT_MESSAGE" value="Mesaj sayılarının ve FamilyView'in tüm aileye dağıtılmasının sağlanılması." />
   </component>
 </project>

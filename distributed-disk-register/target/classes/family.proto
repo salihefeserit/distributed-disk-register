@@ -9,6 +9,7 @@ option java_outer_classname = "FamilyProto";
 message NodeInfo {
   string host = 1;
   int32 port = 2;
+  int32 messageCount = 3;
 }
 
 message FamilyView {

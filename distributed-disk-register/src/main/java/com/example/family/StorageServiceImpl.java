@@ -15,13 +15,11 @@ import java.util.UUID;
 
 public class StorageServiceImpl extends StorageServiceGrpc.StorageServiceImplBase{
     private final String RUN_ID;
-    private int messageCount;
 
     // Uyedeki StorageService ne zaman olusturulduysa
     // o zamanin damgasini depolama klasoru yap
     // degistirilebilir.
     public StorageServiceImpl() {
-        this.messageCount = 0;
         this.RUN_ID = UUID.randomUUID().toString();
     }
 
