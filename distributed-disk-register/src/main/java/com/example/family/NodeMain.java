@@ -14,11 +14,11 @@ import java.util.concurrent.*;
 
 public class NodeMain {
 
-    private static final int START_PORT = 5555;
+    private static final int START_PORT = 5560;
     private static final int PRINT_INTERVAL_SECONDS = 10;
 
     //private static Map<Integer, String> database = new ConcurrentHashMap<>();    //aşama 1-2 haritalama
-    private static final Map<Integer, List<NodeInfo>> nodes = new ConcurrentHashMap<>();;
+    private static final Map<Integer, List<NodeInfo>> nodes = new ConcurrentHashMap<>();
 
     public static void main(String[] args) throws Exception {
         String host = "127.0.0.1";
@@ -50,7 +50,7 @@ public class NodeMain {
                 }
 
                 discoverExistingNodes(host, port, registry, self);
-                startFamilyPrinter(registry, self);
+                startFamilyPrinter(self);
                 startHealthChecker(registry, self);
 
                 server.awaitTermination();
@@ -124,7 +124,7 @@ private static void handleClientTextConnection(Socket client,
                         .setId(Integer.parseInt(parts[1]))
                         .build();
 
-                outtelnet.println(takeFromNodeList(registry, self, id));
+                outtelnet.println(takeFromNodeList(self, id));
             }
 
         }
@@ -138,10 +138,12 @@ private static void handleClientTextConnection(Socket client,
 
 
     private static void broadcastToFamily(NodeRegistry registry,
-                                      NodeInfo self,
-                                      ChatMessage msg, PrintWriter outtelnet) {
+                                          NodeInfo self,
+                                          ChatMessage msg,
+                                          PrintWriter outtelnet) {
 
     List<NodeInfo> members = registry.snapshot();
+    members.remove(self);
     int tolerance = getTolerance();
     String result = "";
     members.sort(Comparator.comparingInt(NodeInfo::getMessageCount));
@@ -151,11 +153,6 @@ private static void handleClientTextConnection(Socket client,
     nodes.put(msg.getId(), new CopyOnWriteArrayList<>(targets));
 
     for (NodeInfo n : targets) {
-        // Kendimize tekrar gönderme
-        // if (n.getHost().equals(self.getHost()) && n.getPort() == self.getPort()) {
-        //     continue;
-        // }
-
         ManagedChannel channel = null;
         try {
             channel = ManagedChannelBuilder
@@ -187,14 +184,15 @@ private static void handleClientTextConnection(Socket client,
 }
 
     //üyelerden mesajı çekmek için kullanılan fonk
-    private static String takeFromNodeList(NodeRegistry registry, NodeInfo self, MessageId id) {
-        List<NodeInfo> members = registry.snapshot();
+    private static String takeFromNodeList(NodeInfo self,
+                                           MessageId id) {
 
-        for (NodeInfo n : members) {
-            // Kendimize tekrar gönderme
-            // if (n.getHost().equals(self.getHost()) && n.getPort() == self.getPort()) {
-            //     continue;
-            // }
+        List<NodeInfo> targetNodes = nodes.getOrDefault(id, Collections.emptyList());
+
+        for (NodeInfo n : targetNodes) {
+            if (n.getHost().equals(self.getHost()) && n.getPort() == self.getPort()) {
+                continue;
+            }
 
             ManagedChannel channel = null;
             try {
@@ -256,7 +254,7 @@ private static void handleClientTextConnection(Socket client,
         }
     }
 
-    private static void startFamilyPrinter(NodeRegistry registry, NodeInfo self) {
+    private static void startFamilyPrinter(NodeInfo self) {
         ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 
         scheduler.scheduleAtFixedRate(() -> {
@@ -279,10 +277,11 @@ private static void handleClientTextConnection(Socket client,
 
                     for (NodeInfo n : members) {
                         boolean isMe = n.getHost().equals(self.getHost()) && n.getPort() == self.getPort();
-                        System.out.printf(" - %s:%d - %d %s%n",
+                        boolean isLeader = n.getHost().equals(self.getHost()) && n.getPort() == START_PORT;
+                        System.out.printf(" - %s:%d - %s%s%n",
                                 n.getHost(),
                                 n.getPort(),
-                                n.getMessageCount(),
+                                isLeader ? "Lider" : String.valueOf(n.getMessageCount()),
                                 isMe ? " (me)" : "");
                     }
                     System.out.println("======================================");

@@ -10,11 +10,9 @@ import io.grpc.stub.StreamObserver;
 public class FamilyServiceImpl extends FamilyServiceGrpc.FamilyServiceImplBase {
 
     private final NodeRegistry registry;
-    private final NodeInfo self;
 
     public FamilyServiceImpl(NodeRegistry registry, NodeInfo self) {
         this.registry = registry;
-        this.self = self;
         this.registry.add(self);
     }
 
