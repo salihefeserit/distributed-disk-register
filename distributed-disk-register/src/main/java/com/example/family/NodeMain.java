@@ -187,7 +187,7 @@ private static void handleClientTextConnection(Socket client,
     private static String takeFromNodeList(NodeInfo self,
                                            MessageId id) {
 
-        List<NodeInfo> targetNodes = nodes.getOrDefault(id, Collections.emptyList());
+        List<NodeInfo> targetNodes = nodes.getOrDefault(id.getId(), Collections.emptyList());
 
         for (NodeInfo n : targetNodes) {
             if (n.getHost().equals(self.getHost()) && n.getPort() == self.getPort()) {
