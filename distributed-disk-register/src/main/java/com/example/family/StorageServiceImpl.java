@@ -30,10 +30,19 @@ public class StorageServiceImpl extends StorageServiceGrpc.StorageServiceImplBas
         try {
             Path dosyaYolu = Path.of("messages/" + RUN_ID, id + ".msg");
             Files.createDirectories(dosyaYolu.getParent());
-            try (BufferedWriter bufferedWriter = Files.newBufferedWriter(
+
+            try (java.nio.channels.FileChannel channel = java.nio.channels.FileChannel.open(
                     dosyaYolu,
-                    StandardOpenOption.CREATE)) {
-                bufferedWriter.write(text);
+                    StandardOpenOption.CREATE,
+                    StandardOpenOption.WRITE,
+                    StandardOpenOption.TRUNCATE_EXISTING)) {
+
+                byte[] bytes = text.getBytes(java.nio.charset.StandardCharsets.UTF_8);
+                java.nio.ByteBuffer buffer = java.nio.ByteBuffer.wrap(bytes);
+
+                while (buffer.hasRemaining()) {
+                    channel.write(buffer);
+                }
             }
             StoreResult status = StoreResult.newBuilder()
                     .setResult("OK")
@@ -53,7 +62,7 @@ public class StorageServiceImpl extends StorageServiceGrpc.StorageServiceImplBas
 
             ChatMessage msg = ChatMessage.newBuilder()
                     .setId(id.getId())
-                    .setText(line)
+                    .setText("OK " + line)
                     .build();
 
             responseObserver.onNext(msg);
