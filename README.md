@@ -12,224 +12,100 @@ Sistem Programlama, Dağıtık Sistemler veya gRPC uygulama taslağı olarak kul
 
 ---
 
-##  Özellikler
+## 👨🏻‍💻 Özellikler
+- Dinamik Node Keşfi: Yeni başlayan node'lar, mevcut ağa otomatik olarak katılır.
 
-### ✔ Otomatik Dağıtık Üye Keşfi
+- Lider Node Mekanizması: 5555 portunda çalışan ilk node "Lider" olarak işlem yapar.
 
-Her yeni Üye:
+- TCP Komut Arayüzü: Lider node, 6666 portu üzerinden TCP bağlantılarını Telnet üzerinden dinler ve SET/GET komutlarını istenilene göre çalıştırır.
 
-* 5555’ten başlayarak boş bir port bulur
-* Kendinden önce gelen üyelere gRPC katılma (Join) isteği gönderir
-* Aile (Family) listesine otomatik dahil olur.
+- Görsel İzleme Paneli (Task Manager): Lider node üzerinde çalışan Swing tabanlı arayüz ile ağdaki node'ların ve mesaj yüklerinin durumu izlenebilir.
 
-### ✔ Lider Üye (Cluster Gateway)
+- Health Checking: Sistem, düşen node'ları tespit eder ve ağ listesinden çıkarır (Health Checking).
 
-İlk başlayan Üye (port 5555) otomatik olarak **lider** kabul edilir ve:
+- Veri Replikasyonu: Mesajlar, tolerans dosyasında belirtilen seviyeye göre birden fazla node'a kopyalanır.
 
-* TCP port **6666** üzerinden dış dünyadan text mesajı dinler
-* Her mesajı Protobuf formatına dönüştürür
-* Tüm diğer üyelere gRPC üzerinden gönderir
-
-### ✔ gRPC + Protobuf İçi Mesajlaşma
-
-Üyeler kendi aralarında sadece **protobuf message** ile haberleşir:
-
-```proto
-message ChatMessage {
-  string text = 1;
-  string fromHost = 2;
-  int32 fromPort = 3;
-  int64 timestamp = 4;
-}
-```
-
-### ✔ Aile (Family) Senkronizasyonu
-
-Her üye, düzenli olarak diğer aile üyeleri listesini ekrana basar:
-
-```
-======================================
-Family at 127.0.0.1:5557 (me)
-Time: 2025-11-13T21:05:00
-Members:
- - 127.0.0.1:5555
- - 127.0.0.1:5556
- - 127.0.0.1:5557 (me)
-======================================
-```
-
-### ✔ Üye Düşmesi (Failover)
-
-Health-check mekanizması ile kopan (offline) üyeler aile listesinden çıkarılır.
-
----
+## 💬 Gereksinimler
+- Java 17 veya üzeri
+- Maven
 
 ## 📁 Proje Yapısı
-
 ```
 distributed-disk-register/
 │
+├── messages/
 ├── pom.xml
 ├── README.md
+├── TOLERANCE.conf
 ├── src
 │   └── main
 │       ├── java/com/example/family/
 │       │       ├── NodeMain.java
 │       │       ├── NodeRegistry.java
 │       │       └── FamilyServiceImpl.java
+│       │       └── StorageServiceImpl.java
+│       │       └── ZeroCopyServiceImpl.java
 │       │
 │       └── proto/
 │               └── family.proto
 ```
+- NodeMain.java: Uygulamanın giriş noktası. Lider seçimini, servislerin başlatılmasını ve node keşfini yönetir.
 
-## 👨🏻‍💻 Kodlama
+- TaskManager.java: Swing tabanlı görsel arayüz. Ağ durumunu tablo halinde gösterir.
 
-Yüksek seviyeli dillerde yazılım geliştirme işlemi basit bir editörden ziyade gelişmiş bir IDE (Integrated Development Environment) ile yapılması tavsiye edilmektedir. JVM ailesi dillerinin en çok tercih edilen [IntelliJ IDEA](https://www.jetbrains.com/idea/) aracını edu' lu mail adresinizle öğrenci lisanslı olarak indirip kullanabilirsiniz. Bu projeyi diskinize klonladıktan sonra IDEA' yı açıp, üst menüden _Open_ seçeneği projenin _pom.xml_ dosyasını seçtiğinizde projeniz açılacaktır. 
+- FamilyServiceImpl.java: Node'lar arası iletişim (gRPC) mantığını içerir.
 
+- StorageServiceImpl.java: Mesajların diske yazılmasını ve okunmasını Buffered IO sayesinde sağlar (messages/ klasörü altında).
 
----
+- ZeroCopyServiceImpl.java: Mesajların diske yazılmasını ve okunmasını Zero-Copy ilkesi sağlar (messages/ klasörü altında).
 
-## 🔧 Derleme
+- NodeRegistry.java: Aktif node'ların listesini tutan thread-safe yapı.
 
-Proje dizininde (pom.xml in olduğu):
+- TOLERANCE.conf: Verinin kaç farklı node'da yedekleneceğini belirler.
 
-```bash
-mvn clean compile
+## 🔧 Kurulum ve Derleme
+Projeyi kendi sisteminizde çalıştırmak için aşağıdaki komutu çalıştırın:
 ```
-
-Bu komut:
-
-* `family.proto` → gRPC Java sınıflarını üretir
-* Tüm server kodlarını derler
-
----
-
+git clone https://github.com/salihefeserit/distributed-disk-register.git
+```
+Projeyi derlemek için proje dizininde aşağıdaki komutu çalıştırın:
+```
+mvn clean install
+```
 ## ▶️ Çalıştırma
+Sistemi başlatmak için NodeMain sınıfını çalıştırın. İdeal bir test ortamı için aşağıdaki adımları izleyebilirsiniz:
 
-Her bir terminal yeni bir üye demektir.
-
-### **Terminal 1 – Lider Üye**
-
-```bash
+### 1. Lider Node'u Başlatma (Terminal 1)
+İlk node her zaman 5555 portunda başlar ve Lider olur.
+```
 mvn exec:java -Dexec.mainClass=com.example.family.NodeMain
 ```
+Not: Lider başladığında Task Manager penceresi de otomatik olarak açılacaktır.
 
-Çıktı:
+![](assets/taskmanager.png)
 
+### 2. Diğer Node'ları Başlatma (Terminal 2, 3, ...)
+Farklı terminallerde NodeMain'i (veya lideri başlatmak için olan bash kodunu) tekrar çalıştırarak ağa yeni node'lar ekleyebilirsiniz. Sistem otomatik olarak boş bir port bulup (5556, 5557...) ağa dahil olacaktır.
+
+![](assets/emptyfamilyprint.png)
+
+### 3. Komut Gönderme (Telnet)
+Lider node (5555), 6666 portundan komut bekler.
+
+Terminal Üzerinden Telnete Bağlanma:
 ```
-Node started on 127.0.0.1:5555
-Leader listening for text on TCP 127.0.0.1:6666
-...
-```
-
-![Sistem Başlatma](https://github.com/ismailhakkituran/distributed-disk-register/blob/main/Distributed%20System%20Start-start.png)
-
-
-### **Terminal 2, 3, 4… – Diğer Üyeler**
-
-Her yeni terminal:
-
-```bash
-mvn exec:java -Dexec.mainClass=com.example.family.NodeMain
-```
-
-Üyeler 5556, 5557, 5558… portlarını otomatik bulur
-ve aileye katılır.
-
----
-![Üyelerin aileye katılması](https://github.com/ismailhakkituran/distributed-disk-register/blob/main/Distributed%20System%20Start-family.png)
-
-## Mesaj Gönderme (TCP → Lider Üye)
-
-Lider Üye, dış dünyadan gelen text’i 6666 portunda bekler.
-
-Yeni bir terminal aç:
-
-```bash
-nc 127.0.0.1 6666
-```
-
-Veya:
-
-```bash
 telnet 127.0.0.1 6666
 ```
-
-Mesaj yaz:
-
+Diskten Veri Okuma (GET) ve Diske Veri Yazma (SET):
 ```
-Merhaba distributed world!
+SET 1 Naber
+OK
+GET 1
+OK Naber
 ```
+Örnek Proje Çıktısı:
 
-![Sistem Başlatma](https://github.com/ismailhakkituran/distributed-disk-register/blob/main/Distributed%20System%20Start-telnet.png)
+![](assets/telnettest.png)
+![](assets/fullfamilyprint.png)
 
-###  Sonuç
-
-Bu mesaj protobuf mesajına çevrilip tüm üyelere gider.
-
----
-
-### Diğer Üyelerdeki örnek çıktı:
-
-```
-💬 Incoming message:
-  From: 127.0.0.1:5555
-  Text: Merhaba distributed world!
-  Timestamp: 1731512345678
---------------------------------------
-```
-
----
-
-##  Çalışma Prensibi
-
-###  1. Dağıtık Üye Keşfi
-
-Yeni Üye, kendinden önceki portları gRPC ile yoklar:
-
-```
-5555 → varsa Join
-5556 → varsa Join
-...
-```
-
-###  2. Lider Üye (Port 5555)
-
-Lider Üye:
-
-* TCP 6666’dan text alır,
-* Protobuf `ChatMessage` nesnesine çevirir,
-* Tüm kardeş üyelere gRPC RPC gönderir.
-
-###  3. Family Senkronizasyonu
-
-Her üye 10 saniyede bir kendi ailesini ekrana basar.
-
----
-
-##  Ödev / Bundan Sonra Yapılacaklar
-
-Öğrenciler:
-
-* Üye düşme tespiti (heartbeat)
-* Leader election
-* gRPC streaming ile real-time chat
-* Redis-backed cluster membership
-* Broadcast queue implementasyonu
-* TCP’den gelen mesajların loglanması
-* Çoklu lider senaryosu & conflict resolution
-
-gibi özellikler ekleyebilir.
-
----
-
-## Lisans
-
-MIT — Eğitim ve araştırma amaçlı serbestçe kullanılabilir.
-
----
-
-##  Katkı
-
-Pull request’e her zaman açığız!
-Yeni özellik önerileri için issue açabilirsiniz.
+![](assets/messagedir.png)
