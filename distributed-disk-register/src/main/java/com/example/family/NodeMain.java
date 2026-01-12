@@ -45,7 +45,7 @@ public class NodeMain {
         // Eğer bu ilk node ise (port 5555), TCP 6666'da text dinlesin
         if (port == START_PORT) {
             startLeaderTextListener(registry, self);
-
+            startTaskManager();
         }
 
         discoverExistingNodes(host, port, registry, self);
@@ -54,6 +54,13 @@ public class NodeMain {
 
         server.awaitTermination();
 
+    }
+
+    private static void startTaskManager() {
+        javax.swing.SwingUtilities.invokeLater(() -> {
+            TaskManager tm = new TaskManager();
+            tm.setVisible(true);
+        });
     }
 
     private static void startLeaderTextListener(NodeRegistry registry, NodeInfo self) {
