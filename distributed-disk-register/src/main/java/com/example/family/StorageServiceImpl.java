@@ -13,23 +13,27 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.UUID;
 
-public class StorageServiceImpl extends StorageServiceGrpc.StorageServiceImplBase{
+public class StorageServiceImpl extends StorageServiceGrpc.StorageServiceImplBase {
     private final String RUN_ID;
 
     // Uyedeki StorageService ne zaman olusturulduysa
     // o zamanin damgasini depolama klasoru yap
     // degistirilebilir.
-    public StorageServiceImpl() {
-        this.RUN_ID = UUID.randomUUID().toString();
+    public StorageServiceImpl(int port) {
+        this.RUN_ID = port + "_" + UUID.randomUUID().toString();
     }
 
     @Override
     public void store(ChatMessage msg, StreamObserver<StoreResult> responseObserver) {
         String id = String.valueOf(msg.getId());
         String text = msg.getText();
+        String resultMsg = "FAIL";
+
         try {
             Path dosyaYolu = Path.of("messages/" + RUN_ID, id + ".msg");
             Files.createDirectories(dosyaYolu.getParent());
+
+            boolean isNewFile = !Files.exists(dosyaYolu);
 
             try (java.nio.channels.FileChannel channel = java.nio.channels.FileChannel.open(
                     dosyaYolu,
@@ -43,9 +47,11 @@ public class StorageServiceImpl extends StorageServiceGrpc.StorageServiceImplBas
                 while (buffer.hasRemaining()) {
                     channel.write(buffer);
                 }
+                resultMsg = isNewFile ? "STORED" : "UPDATED";
             }
+
             StoreResult status = StoreResult.newBuilder()
-                    .setResult("OK")
+                    .setResult(resultMsg)
                     .build();
 
             responseObserver.onNext(status);
@@ -57,7 +63,8 @@ public class StorageServiceImpl extends StorageServiceGrpc.StorageServiceImplBas
 
     @Override
     public void retrieve(MessageId id, StreamObserver<ChatMessage> responseObserver) {
-        try (BufferedReader reader = new BufferedReader(new FileReader("messages/" + RUN_ID + "/" + id.getId() + ".msg"))) {
+        try (BufferedReader reader = new BufferedReader(
+            new FileReader("messages/" + RUN_ID + "/" + id.getId() + ".msg"))) {
             String line = reader.readLine();
 
             ChatMessage msg = ChatMessage.newBuilder()
@@ -69,7 +76,7 @@ public class StorageServiceImpl extends StorageServiceGrpc.StorageServiceImplBas
             responseObserver.onCompleted();
         } catch (FileNotFoundException e) {
             responseObserver.onError(
-                    Status.NOT_FOUND.asRuntimeException()
+                Status.NOT_FOUND.asRuntimeException()
             );
         } catch (IOException e) {
             System.out.println(e.getMessage());

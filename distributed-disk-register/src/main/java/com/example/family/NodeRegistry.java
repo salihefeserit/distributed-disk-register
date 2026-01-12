@@ -1,47 +1,49 @@
 package com.example.family;
 
 import family.NodeInfo;
-import org.w3c.dom.Node;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class NodeRegistry {
 
-    private final Set<NodeInfo> nodes = ConcurrentHashMap.newKeySet();
+    private final Map<String, NodeInfo> nodes = new ConcurrentHashMap<>();
+
+    private String getKey(NodeInfo node) {
+        return node.getHost() + ":" + node.getPort();
+    }
 
     public void add(NodeInfo node) {
-        nodes.add(node);
+        nodes.put(getKey(node), node);
     }
 
     public void addAll(Collection<NodeInfo> others) {
-        nodes.addAll(others);
+        for (NodeInfo n : others) {
+            add(n);
+        }
     }
 
     public List<NodeInfo> snapshot() {
-        return new ArrayList<>(nodes);
+        return new ArrayList<>(nodes.values());
     }
 
     public void remove(NodeInfo node) {
-        nodes.remove(node);
+        nodes.remove(getKey(node));
     }
 
-    public void increaseCount(NodeInfo tobeRemoved) {
-        String host = tobeRemoved.getHost();
-        int port = tobeRemoved.getPort();
-        int messageCount = tobeRemoved.getMessageCount();
+    public void increaseCount(NodeInfo node) {
+        String key = getKey(node);
+        nodes.compute(key, (k, current) -> {
+            int currentCount = (current != null) ? current.getMessageCount() : node.getMessageCount();
 
-        nodes.remove(tobeRemoved);
-
-        NodeInfo newNodeInfo = NodeInfo.newBuilder()
-                .setHost(host)
-                .setPort(port)
-                .setMessageCount(messageCount + 1)
-                .build();
-
-        nodes.add(newNodeInfo);
+            return NodeInfo.newBuilder()
+                    .setHost(node.getHost())
+                    .setPort(node.getPort())
+                    .setMessageCount(currentCount + 1)
+                    .build();
+        });
     }
 }

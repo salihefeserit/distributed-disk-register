@@ -25,3 +25,6 @@ replay_pid*
 
 # shell
 *.sh
+
+.idea/
+.vscode/
