@@ -45,3 +45,8 @@ service StorageService {
     rpc Store (ChatMessage) returns (StoreResult);
     rpc Retrieve (MessageId) returns (ChatMessage);
 }
+
+service ZeroCopyService {
+    rpc StoreZeroCopy (ChatMessage) returns (StoreResult);
+    rpc RetrieveZeroCopy (MessageId) returns (ChatMessage);
+}

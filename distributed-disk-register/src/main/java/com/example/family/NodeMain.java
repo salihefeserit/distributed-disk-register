@@ -31,12 +31,16 @@ public class NodeMain {
 
         NodeRegistry registry = new NodeRegistry();
         FamilyServiceImpl service = new FamilyServiceImpl(registry, self);
+
         StorageServiceImpl service_storage = new StorageServiceImpl(port);
+
+        ZeroCopyServiceImpl service_zerocopy = new ZeroCopyServiceImpl(port);
 
         Server server = ServerBuilder
                 .forPort(port)
                 .addService(service)
-                .addService(service_storage)
+                .addService(service_zerocopy)   //zerocopy yada buffered seçeneği burada
+                //.addService(service_storage)
                 .build()
                 .start();
 
@@ -214,11 +218,17 @@ public class NodeMain {
                 FamilyServiceGrpc.FamilyServiceBlockingStub stub = 
                         FamilyServiceGrpc.newBlockingStub(channel);
 
-                StorageServiceGrpc.StorageServiceBlockingStub stub_storage = 
-                        StorageServiceGrpc.newBlockingStub(channel);
-
                 stub.receiveChat(msg);
-                result = stub_storage.store(msg).getResult();
+
+                //BUFFERED
+                //StorageServiceGrpc.StorageServiceBlockingStub stub_storage_set = StorageServiceGrpc.newBlockingStub(channel);
+
+                //result = stub_storage_set.store(msg).getResult();
+
+                //ZEROCOPY
+                ZeroCopyServiceGrpc.ZeroCopyServiceBlockingStub stub_storage_zerocopy_set = ZeroCopyServiceGrpc.newBlockingStub(channel);
+
+                result = stub_storage_zerocopy_set.storeZeroCopy(msg).getResult();
 
                 if ("STORED".equals(result)) {
                     registry.increaseCount(n);
@@ -254,10 +264,15 @@ public class NodeMain {
                         .usePlaintext()
                         .build();
 
-                StorageServiceGrpc.StorageServiceBlockingStub stub2 = 
-                        StorageServiceGrpc.newBlockingStub(channel);
+                //BUFFERED
+                //StorageServiceGrpc.StorageServiceBlockingStub stub_storage_get = StorageServiceGrpc.newBlockingStub(channel);
 
-                return stub2.retrieve(id).getText();
+                //return stub_storage_get.retrieve(id).getText();
+
+                //ZEROCOPY
+                ZeroCopyServiceGrpc.ZeroCopyServiceBlockingStub stub_storage_zerocopy_get = ZeroCopyServiceGrpc.newBlockingStub(channel);
+
+                return stub_storage_zerocopy_get.retrieveZeroCopy(id).getText();
 
             } catch (Exception ignored) {
             } finally {
