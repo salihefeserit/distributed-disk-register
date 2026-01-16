@@ -19,6 +19,19 @@ public class NodeMain {
 
     private static final Map<Integer, List<NodeInfo>> storageNodes = new ConcurrentHashMap<>();
 
+    // gRPC kanallarının kaydedilmesi
+    private static final Map<String, ManagedChannel> channelCache = new ConcurrentHashMap<>();
+
+    private static ManagedChannel getChannel(String host, int port) {
+        String key = host + ":" + port;
+        return channelCache.computeIfAbsent(key, k -> {
+            return ManagedChannelBuilder
+                    .forAddress(host, port)
+                    .usePlaintext()
+                    .build();
+        });
+    }
+
     public static void main(String[] args) throws Exception {
         String host = "127.0.0.1";
         int port = findFreePort(START_PORT);
@@ -32,7 +45,7 @@ public class NodeMain {
         NodeRegistry registry = new NodeRegistry();
         FamilyServiceImpl service = new FamilyServiceImpl(registry, self);
 
-        StorageServiceImpl service_storage = new StorageServiceImpl(port);
+        // StorageServiceImpl service_storage = new StorageServiceImpl(port);
 
         ZeroCopyServiceImpl service_zerocopy = new ZeroCopyServiceImpl(port);
 
@@ -208,12 +221,8 @@ public class NodeMain {
         }
 
         for (NodeInfo n : finalTargets) {
-            ManagedChannel channel = null;
             try {
-                channel = ManagedChannelBuilder
-                        .forAddress(n.getHost(), n.getPort())
-                        .usePlaintext()
-                        .build();
+                ManagedChannel channel = getChannel(n.getHost(), n.getPort());
 
                 FamilyServiceGrpc.FamilyServiceBlockingStub stub = 
                         FamilyServiceGrpc.newBlockingStub(channel);
@@ -239,8 +248,6 @@ public class NodeMain {
             } catch (Exception e) {
                 System.err.printf("Failed to send to %s:%d (%s)%n",
                         n.getHost(), n.getPort(), e.getMessage());
-            } finally {
-                if (channel != null) channel.shutdownNow();
             }
         }
 
@@ -257,12 +264,8 @@ public class NodeMain {
                 continue;
             }
 
-            ManagedChannel channel = null;
             try {
-                channel = ManagedChannelBuilder
-                        .forAddress(n.getHost(), n.getPort())
-                        .usePlaintext()
-                        .build();
+                ManagedChannel channel = getChannel(n.getHost(), n.getPort());
 
                 //BUFFERED
                 //StorageServiceGrpc.StorageServiceBlockingStub stub_storage_get = StorageServiceGrpc.newBlockingStub(channel);
@@ -274,10 +277,7 @@ public class NodeMain {
 
                 return stub_storage_zerocopy_get.retrieveZeroCopy(id).getText();
 
-            } catch (Exception ignored) {
-            } finally {
-                if (channel != null) channel.shutdownNow();
-            }
+            } catch (Exception ignored) {}
         }
         return "NOT_FOUND";
     }
@@ -326,12 +326,8 @@ public class NodeMain {
         ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 
         scheduler.scheduleAtFixedRate(() -> {
-            ManagedChannel channel = null;
             try {
-                channel = ManagedChannelBuilder
-                        .forAddress("127.0.0.1", START_PORT)
-                        .usePlaintext()
-                        .build();
+                ManagedChannel channel = getChannel("127.0.0.1", START_PORT);
                 try {
                     FamilyServiceGrpc.FamilyServiceBlockingStub stub = 
                             FamilyServiceGrpc.newBlockingStub(channel);
@@ -362,9 +358,6 @@ public class NodeMain {
             catch (Exception e) {
                 System.err.println("Beklenmedik bir hata oluştu: " + e.getMessage());
                 e.printStackTrace();
-            } 
-            finally {
-                if (channel != null) channel.shutdownNow();
             }
         }, 3, PRINT_INTERVAL_SECONDS, TimeUnit.SECONDS);
     }
@@ -381,12 +374,8 @@ public class NodeMain {
                     continue;
                 }
 
-                ManagedChannel channel = null;
                 try {
-                    channel = ManagedChannelBuilder
-                            .forAddress(n.getHost(), n.getPort())
-                            .usePlaintext()
-                            .build();
+                    ManagedChannel channel = getChannel(n.getHost(), n.getPort());
 
                     FamilyServiceGrpc.FamilyServiceBlockingStub stub = 
                             FamilyServiceGrpc.newBlockingStub(channel);
@@ -400,10 +389,6 @@ public class NodeMain {
                     System.out.printf("Node %s:%d unreachable, removing from family%n",
                             n.getHost(), n.getPort());
                     registry.remove(n);
-                } finally {
-                    if (channel != null) {
-                        channel.shutdownNow();
-                    }
                 }
             }
 
@@ -425,12 +410,8 @@ public class NodeMain {
     }
 
     private static boolean isNodeAlive(NodeInfo node, NodeRegistry registry) {
-        ManagedChannel channel = null;
         try {
-            channel = ManagedChannelBuilder
-                    .forAddress(node.getHost(), node.getPort())
-                    .usePlaintext()
-                    .build();
+            ManagedChannel channel = getChannel(node.getHost(), node.getPort());
             FamilyServiceGrpc.FamilyServiceBlockingStub stub = FamilyServiceGrpc.newBlockingStub(channel);
             // bağlantı kontrolü
             stub.getFamily(Empty.newBuilder().build());
@@ -438,10 +419,6 @@ public class NodeMain {
         } catch (Exception e) {
             registry.remove(node);
             return false;
-        } finally {
-            if (channel != null) {
-                channel.shutdownNow();
-            }
         }
     }
 
