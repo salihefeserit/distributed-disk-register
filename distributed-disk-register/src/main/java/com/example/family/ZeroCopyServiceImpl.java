@@ -8,6 +8,10 @@ import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
 
 import java.io.*;
+import java.nio.ByteBuffer;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
@@ -26,8 +30,7 @@ public class ZeroCopyServiceImpl extends ZeroCopyServiceGrpc.ZeroCopyServiceImpl
     @Override
     public void storeZeroCopy(ChatMessage msg, StreamObserver<StoreResult> responseObserver) {
         String id = String.valueOf(msg.getId());
-        String text = msg.getText();
-        String resultMsg = "FAIL";
+        byte[] data = msg.getText().getBytes(StandardCharsets.UTF_8);
 
         try {
             Path dosyaYolu = Path.of("messages/" + RUN_ID, id + ".msg");
@@ -35,29 +38,26 @@ public class ZeroCopyServiceImpl extends ZeroCopyServiceGrpc.ZeroCopyServiceImpl
 
             boolean isNewFile = !Files.exists(dosyaYolu);
 
-            try (java.nio.channels.FileChannel channel = java.nio.channels.FileChannel.open(
-                    dosyaYolu,
+            // FileChannel ile doğrudan yazma
+            try (FileChannel channel = FileChannel.open(dosyaYolu,
                     StandardOpenOption.CREATE,
                     StandardOpenOption.WRITE,
                     StandardOpenOption.TRUNCATE_EXISTING)) {
 
-                byte[] bytes = text.getBytes(java.nio.charset.StandardCharsets.UTF_8);
-                java.nio.ByteBuffer buffer = java.nio.ByteBuffer.wrap(bytes);
-
+                ByteBuffer buffer = ByteBuffer.wrap(data);
                 while (buffer.hasRemaining()) {
                     channel.write(buffer);
                 }
-                resultMsg = isNewFile ? "STORED" : "UPDATED";
+
+                channel.force(true);
             }
 
-            StoreResult status = StoreResult.newBuilder()
-                    .setResult(resultMsg)
-                    .build();
-
-            responseObserver.onNext(status);
+            responseObserver.onNext(StoreResult.newBuilder()
+                    .setResult(isNewFile ? "STORED" : "UPDATED")
+                    .build());
             responseObserver.onCompleted();
         } catch (IOException e) {
-            responseObserver.onError(e);
+            responseObserver.onError(Status.INTERNAL.withDescription(e.getMessage()).asRuntimeException());
         }
     }
 
@@ -65,31 +65,43 @@ public class ZeroCopyServiceImpl extends ZeroCopyServiceGrpc.ZeroCopyServiceImpl
     public void retrieveZeroCopy(MessageId id, StreamObserver<ChatMessage> responseObserver) {
         Path dosyaYolu = Path.of("messages/" + RUN_ID, id.getId() + ".msg");
 
-        try (java.nio.channels.FileChannel channel = java.nio.channels.FileChannel.open(
-                dosyaYolu,
-                StandardOpenOption.READ)) {
+        if (!Files.exists(dosyaYolu)) {
+            responseObserver.onError(Status.NOT_FOUND.withDescription("Dosya bulunamadı").asRuntimeException());
+            return;
+        }
 
+        try (FileChannel channel = FileChannel.open(dosyaYolu, StandardOpenOption.READ)) {
             long fileSize = channel.size();
-            java.nio.ByteBuffer buffer = java.nio.ByteBuffer.allocate((int) fileSize);
 
-            channel.read(buffer);
-            buffer.flip();
+            MappedByteBuffer mappedBuffer = channel.map(FileChannel.MapMode.READ_ONLY, 0, fileSize);
 
-            String line = new String(buffer.array(), java.nio.charset.StandardCharsets.UTF_8);
+            byte[] bytes = new byte[(int) fileSize];
+            mappedBuffer.get(bytes);
 
             ChatMessage msg = ChatMessage.newBuilder()
                     .setId(id.getId())
-                    .setText("OK " + line)
+                    .setText("OK " + new String(bytes, StandardCharsets.UTF_8))
                     .build();
 
             responseObserver.onNext(msg);
             responseObserver.onCompleted();
-        } catch (FileNotFoundException | java.nio.file.NoSuchFileException e) {
-            responseObserver.onError(
-                    Status.NOT_FOUND.asRuntimeException()
-            );
         } catch (IOException e) {
-            responseObserver.onError(e);
+            responseObserver.onError(Status.INTERNAL.withDescription(e.getMessage()).asRuntimeException());
+        }
+    }
+
+    @Override
+    public void deleteZeroCopy(MessageId id, StreamObserver<StoreResult> responseObserver) {
+        Path dosyaYolu = Path.of("messages/" + RUN_ID, id.getId() + ".msg");
+
+        try {
+            boolean deleted = Files.deleteIfExists(dosyaYolu);
+            responseObserver.onNext(StoreResult.newBuilder()
+                    .setResult(deleted ? "DELETED" : "NOT_FOUND")
+                    .build());
+            responseObserver.onCompleted();
+        } catch (IOException e) {
+            responseObserver.onError(Status.INTERNAL.withDescription(e.getMessage()).asRuntimeException());
         }
     }
 }

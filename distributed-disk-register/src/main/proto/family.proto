@@ -10,6 +10,7 @@ message NodeInfo {
   string host = 1;
   int32 port = 2;
   int32 messageCount = 3;
+  int64 totalBytes = 4;
 }
 
 message FamilyView {
@@ -44,9 +45,11 @@ message MessageId {
 service StorageService {
     rpc Store (ChatMessage) returns (StoreResult);
     rpc Retrieve (MessageId) returns (ChatMessage);
+    rpc Delete (MessageId) returns (StoreResult);
 }
 
 service ZeroCopyService {
     rpc StoreZeroCopy (ChatMessage) returns (StoreResult);
     rpc RetrieveZeroCopy (MessageId) returns (ChatMessage);
+    rpc DeleteZeroCopy (MessageId) returns (StoreResult);
 }

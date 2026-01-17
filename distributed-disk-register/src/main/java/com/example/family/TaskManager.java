@@ -26,7 +26,7 @@ public class TaskManager extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        String[] columns = { "Host", "Port", "Mesaj Sayısı" };
+        String[] columns = { "Host", "Port", "Mesaj Sayısı", "Data Size (Bytes / MB)" };
         tableModel = new DefaultTableModel(columns, 0);
         JTable table = new JTable(tableModel);
 
@@ -80,19 +80,23 @@ public class TaskManager extends JFrame {
         for (NodeInfo n : members) {
             String key = n.getHost() + ":" + n.getPort();
             uniqueMap.merge(key, n, (existing,
-                                     candidate) -> (candidate.getMessageCount() > existing.getMessageCount()) ? candidate : existing);
+                    candidate) -> (candidate.getMessageCount() > existing.getMessageCount()) ? candidate : existing);
         }
 
         tableModel.setRowCount(0);
 
         java.util.List<NodeInfo> sortedMembers = new java.util.ArrayList<>(uniqueMap.values());
-        sortedMembers.sort(java.util.Comparator.comparingInt(NodeInfo::getPort));
+        sortedMembers.sort(java.util.Comparator.comparingLong(NodeInfo::getTotalBytes).reversed());
 
         for (NodeInfo n : sortedMembers) {
+            double mb = n.getTotalBytes() / (1024.0 * 1024.0);
+            String sizeStr = String.format("%d B (%.2f MB)", n.getTotalBytes(), mb);
+
             tableModel.addRow(new Object[] {
                     n.getHost(),
                     n.getPort(),
-                    n.getMessageCount()
+                    n.getMessageCount(),
+                    sizeStr
             });
         }
     }

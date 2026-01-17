@@ -55,7 +55,7 @@ public class StorageServiceImpl extends StorageServiceGrpc.StorageServiceImplBas
     @Override
     public void retrieve(MessageId id, StreamObserver<ChatMessage> responseObserver) {
         try (BufferedReader reader = new BufferedReader(
-            new FileReader("messages/" + RUN_ID + "/" + id.getId() + ".msg"))) {
+                new FileReader("messages/" + RUN_ID + "/" + id.getId() + ".msg"))) {
             String line = reader.readLine();
 
             ChatMessage msg = ChatMessage.newBuilder()
@@ -67,10 +67,24 @@ public class StorageServiceImpl extends StorageServiceGrpc.StorageServiceImplBas
             responseObserver.onCompleted();
         } catch (FileNotFoundException e) {
             responseObserver.onError(
-                Status.NOT_FOUND.asRuntimeException()
-            );
+                    Status.NOT_FOUND.asRuntimeException());
         } catch (IOException e) {
             System.out.println(e.getMessage());
+        }
+    }
+
+    @Override
+    public void delete(MessageId id, StreamObserver<StoreResult> responseObserver) {
+        Path dosyaYolu = Path.of("messages/" + RUN_ID, id.getId() + ".msg");
+
+        try {
+            boolean deleted = Files.deleteIfExists(dosyaYolu);
+            responseObserver.onNext(StoreResult.newBuilder()
+                    .setResult(deleted ? "DELETED" : "NOT_FOUND")
+                    .build());
+            responseObserver.onCompleted();
+        } catch (IOException e) {
+            responseObserver.onError(Status.INTERNAL.withDescription(e.getMessage()).asRuntimeException());
         }
     }
 }
