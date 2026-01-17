@@ -10,6 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class NodeRegistry {
 
+    // "host:port" -> "info"
     private final Map<String, NodeInfo> nodes = new ConcurrentHashMap<>();
 
     private String getKey(NodeInfo node) {

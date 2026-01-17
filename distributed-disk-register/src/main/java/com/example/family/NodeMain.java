@@ -32,6 +32,11 @@ public class NodeMain {
         });
     }
 
+    //----- Channel caching
+    // nodelara yapılan grpc bağlantılarını kaydediyor sürekli açılım olmamasını sağlıyor
+    // hash mapte varsa var olanı kullanıuor yok ise yeni bağlantı oluşturuyor
+    //-----
+
     public static void main(String[] args) throws Exception {
         String host = "127.0.0.1";
         int port = findFreePort(START_PORT);
@@ -48,6 +53,11 @@ public class NodeMain {
         // StorageServiceImpl service_storage = new StorageServiceImpl(port);
 
         ZeroCopyServiceImpl service_zerocopy = new ZeroCopyServiceImpl(port);
+
+
+        // ----
+        // .proto dosyasındaki servisleri sunucuya ekliyor, tüm nodelarda çalışıyor
+        // ---
 
         Server server = ServerBuilder
                 .forPort(port)
@@ -147,7 +157,7 @@ public class NodeMain {
                             .setId(Integer.parseInt(parts[1]))
                             .build();
 
-                    outtelnet.println(takeFromNodeList(self, id));
+                    outtelnet.println(takeFromNodeList(self, id, registry));
                 }
 
             }
@@ -255,12 +265,16 @@ public class NodeMain {
     }
 
     private static String takeFromNodeList(NodeInfo self,
-            MessageId id) {
+            MessageId id, NodeRegistry registry) {
 
         List<NodeInfo> targetNodes = storageNodes.getOrDefault(id.getId(), Collections.emptyList());
 
         for (NodeInfo n : targetNodes) {
             if (n.getHost().equals(self.getHost()) && n.getPort() == self.getPort()) {
+                continue;
+            }
+
+            if(!isNodeAlive(n, registry)){
                 continue;
             }
 
