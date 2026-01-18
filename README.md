@@ -6,24 +6,28 @@ Distributed-Disk-Registery (gRPC + TCP)
 
 # gRPC + Protobuf + TCP Hybrid Distributed Server
 
-Bu proje, birden fazla sunucunun dağıtık bir küme (“family”) oluşturduğu, **gRPC + Protobuf** ile kendi aralarında haberleştiği ve aynı zamanda **lider üye (cluster gateway)** üzerinden dış dünyadan gelen **TCP text mesajlarını** tüm üyelere broadcast ettiği hibrit bir mimari örneğidir.
+Bu proje, birden fazla sunucunun dağıtık bir küme (“family”) oluşturduğu, **gRPC + Protobuf** ile kendi aralarında haberleştiği ve aynı zamanda **lider üye (cluster gateway)** üzerinden dış dünyadan gelen **TCP text mesajlarını** seçilen üyelere broadcast ettiği hibrit bir mimari örneğidir.
 
-Sistem Programlama, Dağıtık Sistemler veya gRPC uygulama taslağı olarak kullanınız.
+
 
 ---
 
 ## 👨🏻‍💻 Özellikler
-- Dinamik Node Keşfi: Yeni başlayan node'lar, mevcut ağa otomatik olarak katılır.
+- Dinamik Node Keşfi: Yeni başlayan node'lar, lider olarak kendilerine işaret edilen host adresinde bulunan lider'in ailesine katılırlar.
 
-- Lider Node Mekanizması: 5555 portunda çalışan ilk node "Lider" olarak işlem yapar.
+- Lider Node Mekanizması: LeaderNode.java dosyasının başlatıldığı sistemde eğer 5555 portu kullanılmıyorsa (başka bir lider yoksa) bu port lider'e tahsis edilir ve gelebilecek bağlantılar dinlenmeye başlanır.
 
 - TCP Komut Arayüzü: Lider node, 6666 portu üzerinden TCP bağlantılarını Telnet üzerinden dinler ve SET/GET komutlarını istenilene göre çalıştırır.
 
-- Görsel İzleme Paneli (Task Manager): Lider node üzerinde çalışan Swing tabanlı arayüz ile ağdaki node'ların ve mesaj yüklerinin durumu izlenebilir.
+- Görsel İzleme Paneli (Task Manager): Lider node üzerinde çalışan arayüz ile ailedeki node'ların ve mesaj yüklerinin durumu izlenebilir.
 
-- Health Checking: Sistem, düşen node'ları tespit eder ve ağ listesinden çıkarır (Health Checking).
+- Health Checking: Lider, düşen node'ları tespit eder ve ağ listesinden çıkarır (Health Checking). Lider düşer ise ağ kapanır.
 
-- Veri Replikasyonu: Mesajlar, tolerans dosyasında belirtilen seviyeye göre birden fazla node'a kopyalanır.
+- Veri Replikasyonu: Mesajlar, tolerans dosyasında belirtilen seviyeye göre birden fazla üye'ye üyelerin bulundurdukları toplam mesaj boyutuna göre dengeli bir şekilde kopyalanır.
+
+- Lider Seçimi: Üyeler, bağlanacakları liderlerin ip adreslerini parametre alarak hangi lider'e bağlanacaklarını belirleyebilirler. (Parametre verilmezse localhost'ta lider aranır.)
+
+- Ağ Seçimi: Node'lar varsayılan olarak bulundukları sistem eğer Özel bir IPv4 Alt Ağı'na bağlıysa sistemin o ağdaki yerel ağ adresinde gRPC sunucularını başlatırlar. Ancak herhangi bir IPv4 Alt Ağına bağlı olunmaması durumunda Node'lar localhost üzerinden gRPC sunucularını başlatırlar. (IP seçim politikası NodeMain'deki getIpAdress() fonksiyonu üzerinden değiştirilebilir.)
 
 ## 💬 Gereksinimler
 - Java 17 veya üzeri
@@ -41,6 +45,8 @@ distributed-disk-register/
 │   └── main
 │       ├── java/com/example/family/
 │       │       ├── NodeMain.java
+│       │       ├── LeaderNode.java
+│       │       ├── MemberNode.java
 │       │       ├── NodeRegistry.java
 │       │       └── FamilyServiceImpl.java
 │       │       └── StorageServiceImpl.java
@@ -49,7 +55,11 @@ distributed-disk-register/
 │       └── proto/
 │               └── family.proto
 ```
-- NodeMain.java: Uygulamanın giriş noktası. Lider seçimini, servislerin başlatılmasını ve node keşfini yönetir.
+- NodeMain.java: Uygulamada Lider ve Üyelerin ortak kullandığı fonksiyonların bulunduğu nokta.
+
+- LeaderNode.java: Liderin başlangıç noktası. Lider üzerinden telnet için kullanılacak TCP sunucusu ve aile başlar.
+
+- MemberNode.java: Üyelerin başlangıç noktası. Seçilen lider'e kendisini tanıtır.
 
 - TaskManager.java: Swing tabanlı görsel arayüz. Ağ durumunu tablo halinde gösterir.
 

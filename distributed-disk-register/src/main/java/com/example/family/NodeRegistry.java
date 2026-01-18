@@ -49,4 +49,33 @@ public class NodeRegistry {
                     .build();
         });
     }
+
+    public void decreaseLoad(NodeInfo node, long messageSize) {
+        String key = getKey(node);
+        nodes.compute(key, (k, current) -> {
+            int currentCount = (current != null) ? current.getMessageCount() : node.getMessageCount();
+            long currentBytes = (current != null) ? current.getTotalBytes() : node.getTotalBytes();
+
+            return NodeInfo.newBuilder()
+                    .setHost(node.getHost())
+                    .setPort(node.getPort())
+                    .setMessageCount(currentCount - 1)
+                    .setTotalBytes(currentBytes - messageSize)
+                    .build();
+        });
+    }
+
+    public void setLoad(NodeInfo node, long messageSize) {
+        String key = getKey(node);
+        nodes.compute(key, (k, current) -> {
+            int currentCount = (current != null) ? current.getMessageCount() : node.getMessageCount();
+
+            return NodeInfo.newBuilder()
+                    .setHost(node.getHost())
+                    .setPort(node.getPort())
+                    .setMessageCount(currentCount)
+                    .setTotalBytes(messageSize)
+                    .build();
+        });
+    }
 }

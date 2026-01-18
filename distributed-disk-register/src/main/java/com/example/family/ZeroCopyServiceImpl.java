@@ -80,7 +80,7 @@ public class ZeroCopyServiceImpl extends ZeroCopyServiceGrpc.ZeroCopyServiceImpl
 
             ChatMessage msg = ChatMessage.newBuilder()
                     .setId(id.getId())
-                    .setText("OK " + new String(bytes, StandardCharsets.UTF_8))
+                    .setText(new String(bytes, StandardCharsets.UTF_8))
                     .build();
 
             responseObserver.onNext(msg);

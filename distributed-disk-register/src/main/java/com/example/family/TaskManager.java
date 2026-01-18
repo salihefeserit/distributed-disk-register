@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 public class TaskManager extends JFrame {
 
     private final DefaultTableModel tableModel;
-    private final String targetHost = "127.0.0.1";
+    private final String targetHost = LeaderNode.LEADER_HOST;
     private final int targetPort = 5555;
 
     public TaskManager() {
@@ -91,9 +91,10 @@ public class TaskManager extends JFrame {
         for (NodeInfo n : sortedMembers) {
             double mb = n.getTotalBytes() / (1024.0 * 1024.0);
             String sizeStr = String.format("%d B (%.2f MB)", n.getTotalBytes(), mb);
+            String host = n.getHost();
 
             tableModel.addRow(new Object[] {
-                    n.getHost(),
+                    host,
                     n.getPort(),
                     n.getMessageCount(),
                     sizeStr
