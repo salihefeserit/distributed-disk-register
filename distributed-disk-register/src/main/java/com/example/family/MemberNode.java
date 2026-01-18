@@ -73,7 +73,7 @@ public class MemberNode {
 
         joinToFamily(LEADER_HOST, port, registry, self);
 
-        startFamilyPrinter(self, LEADER_HOST);
+        startFamilyPrinter(self, LEADER_HOST, registry);
 
         server.awaitTermination();
 
@@ -127,7 +127,7 @@ public class MemberNode {
         });
     }
 
-    private static void startFamilyPrinter(NodeInfo self, String host) {
+    private static void startFamilyPrinter(NodeInfo self, String host, NodeRegistry registry) {
         ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 
         scheduler.scheduleAtFixedRate(() -> {
@@ -138,7 +138,15 @@ public class MemberNode {
                     List<NodeInfo> members = stub
                             .withDeadlineAfter(3, TimeUnit.SECONDS)
                             .getFamily(Empty.newBuilder().build()).getMembersList();
-                            
+
+                    boolean amIBanned = members.stream()
+                        .noneMatch(n -> n.getHost().equals(self.getHost()) && n.getPort() == self.getPort());
+
+                    if (amIBanned) {
+                        System.out.println("Lider beni listeden silmiş! Tekrar katılıyorum...");
+                        joinToFamily(host, self.getPort(), registry, self); // Registry yeni olabilir veya mevcut
+                    }
+
                     System.out.println("======================================");
                     System.out.printf("Family at %s:%d (me)%n", self.getHost(), self.getPort());
                     System.out.println("Time: " + LocalDateTime.now());

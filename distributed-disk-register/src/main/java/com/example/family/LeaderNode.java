@@ -16,14 +16,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
-
-import java.util.stream.Stream;
 
 import family.*;
 import io.grpc.ManagedChannel;
@@ -42,6 +38,7 @@ public class LeaderNode {
     private static final Map<String, ManagedChannel> channelCache = new ConcurrentHashMap<>();
 
     private static final int PRINT_INTERVAL_SECONDS = 10;
+    private static final int TOLERANCE = getTolerance();
 
     public static void main(String[] args) throws Exception {
         System.setProperty("java.net.preferIPv4Stack", "true");
@@ -95,8 +92,9 @@ public class LeaderNode {
             ChatMessage msg,
             PrintWriter outtelnet) {
 
-        int tolerance = getTolerance();
-        List<NodeInfo> toBeUpdatedExistingTargets = storageNodes.getOrDefault(msg.getId(), Collections.emptyList());
+        List<NodeInfo> sourceList = storageNodes.getOrDefault(msg.getId(), Collections.emptyList());
+        List<NodeInfo> existingTargets = sourceList;
+        List<NodeInfo> newExistingTargets = new ArrayList<>(sourceList);
         List<NodeInfo> additionalTargets = new ArrayList<>();
 
         List<NodeInfo> allLiveMembers = registry.snapshot();
@@ -106,72 +104,95 @@ public class LeaderNode {
                     .setId(msg.getId())
                     .build();
 
-        if (!toBeUpdatedExistingTargets.isEmpty()) {
+        ChatMessage oldMessage = ChatMessage.newBuilder().build();
+        long oldSize = oldMessage.getText().length();
 
-            for (NodeInfo target : toBeUpdatedExistingTargets) {
+        List<NodeInfo> successfulAdditionalNodes = new ArrayList<>();
+
+        int storedCount = 0;
+
+        if (!existingTargets.isEmpty()) {
+
+            for (NodeInfo target : existingTargets) {
                 if (!isNodeAlive(target, registry)) {
-                    toBeUpdatedExistingTargets.remove(target);
+                    newExistingTargets.remove(target);
                 }
             }
 
-            int currentSize = toBeUpdatedExistingTargets.size();
+            for (NodeInfo n : newExistingTargets) {
+                try {
+                    ManagedChannel channel = getChannel(n.getHost(), n.getPort());
 
-            if (currentSize < tolerance) {
-                int needed = tolerance - currentSize;
+                    FamilyServiceGrpc.FamilyServiceBlockingStub stub = FamilyServiceGrpc.newBlockingStub(channel);
+
+                    stub.receiveChat(msg);
+
+                    // ZEROVOPY (AKTIF)
+                    ZeroCopyServiceGrpc.ZeroCopyServiceBlockingStub stub_ZeroCopy = ZeroCopyServiceGrpc
+                            .newBlockingStub(channel);
+
+                    oldMessage = stub_ZeroCopy.retrieveZeroCopy(msgId);
+                    oldSize = oldMessage.getText().length();
+
+                    StoreResult storeRes = stub_ZeroCopy.storeZeroCopy(msg);
+
+                    // BUFFERED (PASIF)
+                    // StorageServiceGrpc.StorageServiceBlockingStub stub =
+                    // StorageServiceGrpc.newBlockingStub(channel);
+                    // StoreResult storeRes = stub.store(msg);
+
+                    String resStr = storeRes.getResult();
+
+                    if ("UPDATED".equals(resStr)) {
+                        System.out.printf("Mesaj %s:%d adresinde güncellendi%n", n.getHost(), n.getPort());
+                        storedCount += 1;
+                    } else {
+                        newExistingTargets.remove(n);
+                        continue;
+                    }
+
+                } catch (Exception e) {
+                    System.err.printf("%s:%d adresine gönderim başarısız (%s)%n",
+                            n.getHost(), n.getPort(), e.getMessage());
+
+                    // Hata aldıysak bu kanalı temizle
+                    newExistingTargets.remove(n);
+                    invalidateChannel(n.getHost(), n.getPort());
+                
+                    continue;
+                }
+            }
+
+            if (storedCount < TOLERANCE) {
                 // SORT BY SIZE (Total Bytes)
                 allLiveMembers.sort(Comparator.comparingLong(NodeInfo::getTotalBytes));
 
                 for (NodeInfo candidate : allLiveMembers) {
-                    if (needed <= 0)
-                        break;
-
-                    boolean alreadyInList = toBeUpdatedExistingTargets.stream()
+                    boolean alreadyInList = existingTargets.stream()
                             .anyMatch(
                                     t -> t.getHost().equals(candidate.getHost()) && t.getPort() == candidate.getPort());
 
                     if (!alreadyInList) {
                         if (isNodeAlive(candidate, registry)) {
                             additionalTargets.add(candidate);
-                            needed--;
                         }
                     }
                 }
             }
-            storageNodes.put(msg.getId(), new CopyOnWriteArrayList<>(
-                Stream.concat(toBeUpdatedExistingTargets.stream(), additionalTargets.stream())
-                    .collect(Collectors.toList())
-            ));
-
         } else {
             allLiveMembers = registry.snapshot();
             allLiveMembers.remove(self);
             // SORT BY SIZE (Total Bytes)
             allLiveMembers.sort(Comparator.comparingLong(NodeInfo::getTotalBytes));
 
-            int needed = tolerance;
             for (NodeInfo candidate : allLiveMembers) {
-                if (needed <= 0)
-                    break;
                 if (isNodeAlive(candidate, registry)) {
                     additionalTargets.add(candidate);
-                    needed--;
                 }
             }
-            storageNodes.put(msg.getId(), new CopyOnWriteArrayList<>(
-                Stream.concat(toBeUpdatedExistingTargets.stream(), additionalTargets.stream())
-                    .collect(Collectors.toList())
-            ));
         }
 
-        List<NodeInfo> successfulNodes = new ArrayList<>();
-        boolean failedExists = false;
-        boolean failedNews = false;
-        String finalError = "";
-
-        ChatMessage oldMessage = ChatMessage.newBuilder().build();
-        long oldSize = 0;
-
-        for (NodeInfo n : toBeUpdatedExistingTargets) {
+        for (NodeInfo n : additionalTargets) {
             try {
                 ManagedChannel channel = getChannel(n.getHost(), n.getPort());
 
@@ -182,44 +203,36 @@ public class LeaderNode {
                 // ZEROVOPY (AKTIF)
                 ZeroCopyServiceGrpc.ZeroCopyServiceBlockingStub stub_ZeroCopy = ZeroCopyServiceGrpc
                         .newBlockingStub(channel);
-
-                oldMessage = stub_ZeroCopy.retrieveZeroCopy(msgId);
-                oldSize = oldMessage.getText().length();
-
                 StoreResult storeRes = stub_ZeroCopy.storeZeroCopy(msg);
 
                 // BUFFERED (PASIF)
-                // StorageServiceGrpc.StorageServiceBlockingStub stub =
-                // StorageServiceGrpc.newBlockingStub(channel);
+                // StorageServiceGrpc.StorageServiceBlockingStub stub = StorageServiceGrpc.newBlockingStub(channel);
                 // StoreResult storeRes = stub.store(msg);
 
                 String resStr = storeRes.getResult();
 
-                if ("UPDATED".equals(resStr)) {
-                    successfulNodes.add(n);
-                    System.out.printf("Mesaj %s:%d adresinde güncellendi%n", n.getHost(), n.getPort());
+                if ("STORED".equals(resStr)) {
+                    successfulAdditionalNodes.add(n);
+                    System.out.printf("Mesaj %s:%d adresine yayınlandı%n", n.getHost(), n.getPort());
+                    storedCount += 1;
+                    if (storedCount == TOLERANCE) {
+                        break;
+                    }
                 } else {
-                    failedExists = true;
-                    finalError = "Sonuç TAMAM degil: " + resStr;
-                    break;
+                    continue;
                 }
 
             } catch (Exception e) {
-                failedExists = true;
-                finalError = e.getMessage();
                 System.err.printf("%s:%d adresine gönderim başarısız (%s)%n",
                         n.getHost(), n.getPort(), e.getMessage());
-
-                // Hata aldıysak bu kanalı temizle
                 invalidateChannel(n.getHost(), n.getPort());
-                
-                break;
+                continue;
             }
         }
 
-        if (failedExists) {
-            System.err.println("Hata oluştu.Başarılı nodelar geri alınıyor... Hata: " + finalError);
-            for (NodeInfo n : successfulNodes) {
+        if (successfulAdditionalNodes.size() + newExistingTargets.size() < TOLERANCE && allLiveMembers.size() >= TOLERANCE) {
+            System.err.println("Hata oluştu.Başarılı nodelar geri alınıyor...");
+            for (NodeInfo n : newExistingTargets) {
                 try {
                     ManagedChannel channel = getChannel(n.getHost(), n.getPort());
                     MessageId id = MessageId.newBuilder().setId(msg.getId()).build();
@@ -240,58 +253,7 @@ public class LeaderNode {
                             e.getMessage());
                 }
             }
-            outtelnet.println("ERROR");
-        } else {
-            // Hepsi başarılı ise load güncellemesi yap
-            for (NodeInfo n : toBeUpdatedExistingTargets) {
-                long size = msg.getText().length();
-                registry.decreaseLoad(n, oldSize);
-                registry.increaseLoad(n, size);
-            }
-        }
-
-        if (failedExists != true) {
-            for (NodeInfo n : additionalTargets) {
-                try {
-                    ManagedChannel channel = getChannel(n.getHost(), n.getPort());
-
-                    FamilyServiceGrpc.FamilyServiceBlockingStub stub = FamilyServiceGrpc.newBlockingStub(channel);
-
-                    stub.receiveChat(msg);
-
-                    // ZEROVOPY (AKTIF)
-                    ZeroCopyServiceGrpc.ZeroCopyServiceBlockingStub stub_ZeroCopy = ZeroCopyServiceGrpc
-                            .newBlockingStub(channel);
-                    StoreResult storeRes = stub_ZeroCopy.storeZeroCopy(msg);
-
-                    // BUFFERED (PASIF)
-                    // StorageServiceGrpc.StorageServiceBlockingStub stub = StorageServiceGrpc.newBlockingStub(channel);
-                    // StoreResult storeRes = stub.store(msg);
-
-                    String resStr = storeRes.getResult();
-
-                    if ("STORED".equals(resStr)) {
-                        successfulNodes.add(n);
-                        System.out.printf("Mesaj %s:%d adresine yayınlandı%n", n.getHost(), n.getPort());
-                    } else {
-                        failedNews = true;
-                        finalError = "Sonuç TAMAM degil: " + resStr;
-                        break;
-                    }
-
-                } catch (Exception e) {
-                    failedNews = true;
-                    finalError = e.getMessage();
-                    System.err.printf("%s:%d adresine gönderim başarısız (%s)%n",
-                            n.getHost(), n.getPort(), e.getMessage());
-                    break;
-                }
-            }
-        }
-
-        if (failedNews) {
-            System.err.println("Hata oluştu.Başarılı nodelar geri alınıyor... Hata: " + finalError);
-            for (NodeInfo n : successfulNodes) {
+            for (NodeInfo n : successfulAdditionalNodes) {
                 try {
                     ManagedChannel channel = getChannel(n.getHost(), n.getPort());
                     MessageId id = MessageId.newBuilder().setId(msg.getId()).build();
@@ -303,22 +265,56 @@ public class LeaderNode {
                     // BUFFERED (PASIF)
                     // StorageServiceGrpc.StorageServiceBlockingStub stub = StorageServiceGrpc.newBlockingStub(channel);
                     // stub.delete(id);
+                    // stub.store(oldMessage);
 
-                    System.out.printf("%s:%d adresindeki mesaj geri alındı (silindi)%n", n.getHost(), n.getPort());
+                    System.out.printf("%s:%d adresindeki mesaj silindi%n", n.getHost(), n.getPort());
                 } catch (Exception e) {
                     System.err.printf("%s:%d adresinde geri alma başarısız: %s%n", n.getHost(), n.getPort(),
                             e.getMessage());
                 }
             }
             outtelnet.println("ERROR");
-        } 
-        
-        if (failedNews != true && failedExists != true) {
-            // Hepsi başarılı ise load güncellemesi yap
-            for (NodeInfo n : additionalTargets) {
+        }
+        else {
+            for (NodeInfo n : newExistingTargets) {
+                long size = msg.getText().length();
+                registry.decreaseLoad(n, oldSize);
+                registry.increaseLoad(n, size);
+            }
+
+            for (NodeInfo n : successfulAdditionalNodes) {
                 long size = msg.getText().length();
                 registry.increaseLoad(n, size);
             }
+
+            // 1. Başarısız olanları tespit et (Başlangıçtaki liste - Sonuçtaki başarılı liste)
+            List<NodeInfo> failedNodes = new ArrayList<>(existingTargets);
+            failedNodes.removeAll(newExistingTargets);
+            storageNodes.compute(msg.getId(), (key, currentList) -> {
+                // Eğer liste hiç yoksa, bizim başarılı listemizi döndür
+                if (currentList == null) {
+                    List<NodeInfo> newList = new ArrayList<>();
+                    newList.addAll(newExistingTargets);
+                    newList.addAll(successfulAdditionalNodes);
+                    return newList;
+                }
+                // 2. Mevcut listenin kopyasını al (Üzerinde değişiklik yapacağız)
+                List<NodeInfo> updatedList = new ArrayList<>(currentList);
+                // 3. Hatalı node'ları mevcut listeden temizle
+                for (NodeInfo failed : failedNodes) {
+                    updatedList.removeIf(n -> n.getHost().equals(failed.getHost()) && n.getPort() == failed.getPort());
+                }
+                // 4. Yeni başarıyla eklenenleri listeye ekle (Zaten yoksa)
+                for (NodeInfo added : successfulAdditionalNodes) {
+                    boolean exists = updatedList.stream()
+                        .anyMatch(n -> n.getHost().equals(added.getHost()) && n.getPort() == added.getPort());
+                    if (!exists) {
+                        updatedList.add(added);
+                    }
+                }
+                return updatedList;
+            });
+
             outtelnet.println("OK");
         }
     }
@@ -340,7 +336,7 @@ public class LeaderNode {
 
                 PrintWriter outtelnet = new PrintWriter(client.getOutputStream(), true);
 
-                String[] parts = text.split(" ");
+                String[] parts = text.split(" ", 3);
                 String command = parts[0].toUpperCase();
 
                 if (command.equals("SET")) {

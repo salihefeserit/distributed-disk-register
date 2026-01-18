@@ -27,7 +27,7 @@ Bu proje, birden fazla sunucunun dağıtık bir küme (“family”) oluşturdu�
 
 - Lider Seçimi: Üyeler, bağlanacakları liderlerin ip adreslerini parametre alarak hangi lider'e bağlanacaklarını belirleyebilirler. (Parametre verilmezse localhost'ta lider aranır.)
 
-- Ağ Seçimi: Node'lar varsayılan olarak bulundukları sistem eğer Özel bir IPv4 Alt Ağı'na bağlıysa sistemin o ağdaki yerel ağ adresinde gRPC sunucularını başlatırlar. Ancak herhangi bir IPv4 Alt Ağına bağlı olunmaması durumunda Node'lar localhost üzerinden gRPC sunucularını başlatırlar. (IP seçim politikası NodeMain'deki getIpAdress() fonksiyonu üzerinden değiştirilebilir.)
+- Ağ Seçimi: Node'lar kendilerine verilen CLI parametrelerini alarak bulundukları sistemin üyesi olduğu hangi ağ üzerinde bulunabileceklerini seçebilirler. Örn: sistemin fiziksel IPv4 adresi olan 192.168.1.44 parametre verilmesi halinde o node'un fiziksel ağ içinde erişebilir olmasını sağlar (Parametre verilmemesi halinde localhost).
 
 ## 💬 Gereksinimler
 - Java 17 veya üzeri
@@ -44,7 +44,6 @@ distributed-disk-register/
 ├── src
 │   └── main
 │       ├── java/com/example/family/
-│       │       ├── NodeMain.java
 │       │       ├── LeaderNode.java
 │       │       ├── MemberNode.java
 │       │       ├── NodeRegistry.java
@@ -55,9 +54,8 @@ distributed-disk-register/
 │       └── proto/
 │               └── family.proto
 ```
-- NodeMain.java: Uygulamada Lider ve Üyelerin ortak kullandığı fonksiyonların bulunduğu nokta.
 
-- LeaderNode.java: Liderin başlangıç noktası. Lider üzerinden telnet için kullanılacak TCP sunucusu ve aile başlar.
+- LeaderNode.java: Liderin başlatılma noktası.
 
 - MemberNode.java: Üyelerin başlangıç noktası. Seçilen lider'e kendisini tanıtır.
 
@@ -85,26 +83,30 @@ mvn clean install
 ## ▶️ Çalıştırma
 Sistemi başlatmak için NodeMain sınıfını çalıştırın. İdeal bir test ortamı için aşağıdaki adımları izleyebilirsiniz:
 
-### 1. Lider Node'u Başlatma (Terminal 1)
+### 1. Lider Node'u Başlatma
 İlk node her zaman 5555 portunda başlar ve Lider olur.
 ```
-mvn exec:java -Dexec.mainClass=com.example.family.NodeMain
+mvn exec:java -Dexec.mainClass=com.example.family.LeaderNode -DmyHost=192.168.1.150
 ```
+Not: ``-DmyHost=192.168.1.150`` şeklinde parametre verilmemesi halinde lider localhost üzerinde başlatılacaktır.
 Not: Lider başladığında Task Manager penceresi de otomatik olarak açılacaktır.
 
-![](assets/taskmanager.png)
+### 2. Üye Node'ları Başlatma
+Aynı sistemdeki farklı terminallerde veya liderin kullandığı ağ ile aynı ağda bulunan başka bir sistem üzerinde MemberNode'u kullanacağı IPv4 adresi ve kullanacağı liderin IPv4 adresini vererek başlatılabilir.
+Bulunduğu IP adresinde 5556 portundan başlayarak sırayla doluluk kontrolu yaparak uygun portlara yerleşir. (5556-5557-...)
+```
+mvn exec:java -Dexec.mainClass=com.example.family.MemberNode -DmyHost=192.168.1.44 -DleaderHost=192.168.1.150
+```
+Not: Üye, parametre alarak başlatılmazsa ``-DmyHost``ve ``-DleaderHost``parametreleri otomatik olarak localhost seçilir.
 
-### 2. Diğer Node'ları Başlatma (Terminal 2, 3, ...)
-Farklı terminallerde NodeMain'i (veya lideri başlatmak için olan bash kodunu) tekrar çalıştırarak ağa yeni node'lar ekleyebilirsiniz. Sistem otomatik olarak boş bir port bulup (5556, 5557...) ağa dahil olacaktır.
-
-![](assets/emptyfamilyprint.png)
 
 ### 3. Komut Gönderme (Telnet)
-Lider node (5555), 6666 portundan komut bekler.
+Lider node 6666 portunda komut bekler.
+Telnete bağlanılırken lidere ``-DmyHost`` parametresiyle verilen IP kullanılır.
 
 Terminal Üzerinden Telnete Bağlanma:
 ```
-telnet 127.0.0.1 6666
+telnet 192.168.1.150 6666
 ```
 Diskten Veri Okuma (GET) ve Diske Veri Yazma (SET):
 ```
@@ -113,9 +115,8 @@ OK
 GET 1
 OK Naber
 ```
-Örnek Proje Çıktısı:
 
-![](assets/telnettest.png)
-![](assets/fullfamilyprint.png)
-
-![](assets/messagedir.png)
+## Eklenecekler
+- [ ] Senkron olan bazı işlemleri asenkron yapma.
+- [ ] Liderin düşmesi durumunda bulunan üyelerden birinin liderin yerini alması.
+- [ ] Service Discovery mekanizması.

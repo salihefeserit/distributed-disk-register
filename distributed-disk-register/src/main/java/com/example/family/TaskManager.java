@@ -10,6 +10,8 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -19,6 +21,8 @@ public class TaskManager extends JFrame {
     private final DefaultTableModel tableModel;
     private final String targetHost = LeaderNode.LEADER_HOST;
     private final int targetPort = 5555;
+
+        private static final Map<String, ManagedChannel> channelCache = new ConcurrentHashMap<>();
 
     public TaskManager() {
         setTitle("Görev Yöneticisi");
@@ -48,11 +52,8 @@ public class TaskManager extends JFrame {
     }
 
     private void refreshData() {
-        ManagedChannel channel = null;
         try {
-            channel = ManagedChannelBuilder.forAddress(targetHost, targetPort)
-                    .usePlaintext()
-                    .build();
+            ManagedChannel channel = getChannel(targetHost, targetPort);
 
             FamilyServiceGrpc.FamilyServiceBlockingStub stub = FamilyServiceGrpc.newBlockingStub(channel);
 
@@ -64,13 +65,6 @@ public class TaskManager extends JFrame {
 
         } catch (Exception e) {
             System.err.println("Task Manager: Lidere bağlanılamadı (" + e.getMessage() + ")");
-        } finally {
-            if (channel != null) {
-                try {
-                    channel.shutdownNow();
-                } catch (Exception ignored) {
-                }
-            }
         }
     }
 
@@ -100,5 +94,15 @@ public class TaskManager extends JFrame {
                     sizeStr
             });
         }
+    }
+
+    public static ManagedChannel getChannel(String host, int port) {
+        String key = host + ":" + port;
+        return channelCache.computeIfAbsent(key, k -> {
+            return ManagedChannelBuilder
+                    .forAddress(host, port)
+                    .usePlaintext()
+                    .build();
+        });
     }
 }
